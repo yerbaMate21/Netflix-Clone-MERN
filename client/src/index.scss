@@ -1,0 +1,101 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  background-color: black;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.j-center {
+  justify-content: center;
+}
+
+.j-between {
+  justify-content: space-between;
+}
+
+.a-center {
+  align-items: center;
+}
+
+.a-start {
+  align-items: start;
+}
+
+.a-end {
+  align-items: end;
+}
+
+.t-center {
+  text-align: center;
+}
+
+.btn {
+  font-weight: bold;
+  max-height: 3.5rem;
+  background-color: #e50914;
+  border: none;
+  border-radius: 0.2rem;
+  padding: 0.5rem 1rem;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s background-color;
+}
+
+.btn:hover {
+  background-color: #a8050d;
+}
+
+.btn.loading {
+  opacity: 0.5;
+}
+
+i {
+  display: flex;
+}
+
+a {
+  text-decoration: none;
+  display: flex;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-transition-delay: 9999s;
+  transition-delay: 9999s;
+}
+
+// media queries for smaller devices
+@media only screen and (max-width: 960px) {
+  body {
+    font-size: 1rem;
+
+    p {
+      font-size: 1.2rem;
+    }
+  }
+}
