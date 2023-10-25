@@ -153,7 +153,7 @@ const Container = styled.div`
     .input-box {
       input {
         height: 3.2rem;
-        border: 1px solid #333333;
+        border: 1.6px solid #333333;
         color: #333333;
       }
 

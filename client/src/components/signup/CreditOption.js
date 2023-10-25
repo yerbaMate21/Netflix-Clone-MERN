@@ -131,7 +131,7 @@ const CreditOption = () => {
               <div className="text">{planPrice}&nbsp;month</div>
               <div className="description">{planName}</div>
             </div>
-            <button type="button" onClick={() => navigate("/signup/plan")}>
+            <button type="button" onClick={() => navigate("/signup/editplan")}>
               <span>Change</span>
             </button>
           </div>

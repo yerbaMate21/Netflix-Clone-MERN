@@ -12,7 +12,6 @@ const CreateEmail = () => {
     if (state.email.isValid) {
       localStorage.setItem("email", state.email.value);
 
-      // navigate to MultiStepForm
       navigate("/signup/registration");
     }
   };

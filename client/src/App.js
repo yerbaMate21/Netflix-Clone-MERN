@@ -39,6 +39,10 @@ const App = () => {
             element={<Signup children={<PlanOption />} />}
           />
           <Route
+            path="/signup/editplan"
+            element={<Signup children={<PlanOption />} />}
+          />
+          <Route
             path="/signup/creditOption"
             element={<Signup children={<CreditOption />} />}
           />

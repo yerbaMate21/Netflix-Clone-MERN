@@ -48,7 +48,7 @@ const PlanOption = () => {
 
   useEffect(() => {
     const handleClassName = () => {
-      if (scrollPosition >= yPos) {
+      if (scrollPosition >= yPos + 100) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -78,7 +78,7 @@ const PlanOption = () => {
       <Transition>
         <main>
           <div className="context">
-            {location.pathname === "/signup/planform" && (
+            {location.pathname === "/signup/plan" && (
               <span>
                 STEP <strong>2</strong> OF <strong>3</strong>
               </span>
