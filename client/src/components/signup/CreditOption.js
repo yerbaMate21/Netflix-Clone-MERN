@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AiOutlineCreditCard } from "react-icons/ai";
 import useRegistrationForm from "../../hooks/useRegistrationForm";
+import { useUserDetailsContext } from "../../hooks/useUserDetailsContext";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import visa from "../../assets/img/VISA.png";
 import mastercard from "../../assets/img/MASTERCARD.png";
 import amex from "../../assets/img/AMEX.png";
@@ -20,7 +22,18 @@ const CreditOption = () => {
   const [isConset, setIsConset] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
-  const { state, onChange, onBlur, onSubmit } = useRegistrationForm();
+  const { state, setState, onChange, onBlur, onSubmit } = useRegistrationForm();
+
+  const { dispatch } = useUserDetailsContext();
+  const { user } = useAuthContext();
+
+  const [isLoading, setIsLoading] = useState(null);
+  const [error, setError] = useState({
+    cardNumber: null,
+    expirationDate: null,
+    cvv: null,
+    name: null,
+  });
 
   useEffect(() => {
     let card = CardType(state.cardNumber.value);
@@ -36,15 +49,96 @@ const CreditOption = () => {
   const planName = localStorage.getItem("planName");
   const planPrice = localStorage.getItem("planPrice");
 
-  const handleSubmit = async (e) => {
+  const submitUserDetails = async () => {
+    setIsLoading(true);
+
+    if (!user) {
+      setError("You must be logged in");
+
+      // ??????????????
+      console.log("You must be logged in");
+
+      return;
+    }
+
+    const cardNumber = state.cardNumber.value;
+    const cardExpirationDate = state.expirationDate.value;
+    const cardCvv = state.cvv.value;
+    const cardName = state.name.value;
+    const plan = planName;
+
+    const userDetails = {
+      cardNumber,
+      cardExpirationDate,
+      cardCvv,
+      cardName,
+      plan,
+    };
+
+    const response = await fetch("/api/userDetails", {
+      method: "POST",
+      body: JSON.stringify(userDetails),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    const json = await response.json();
+
+    if (!response.ok) {
+      setIsLoading(false);
+      setError({
+        ...error,
+        cardNumber: json.cardNumberError,
+        expirationDate: json.cardExpirationDateError,
+        cvv: json.cardCvvError,
+        name: json.cardNameError,
+      });
+    }
+    if (response.ok) {
+      setIsLoading(false);
+      dispatch({ type: "CREATE_USERDETAILS", payload: json });
+      setError({
+        ...error,
+        cardNumber: null,
+        expirationDate: null,
+        cvv: null,
+        name: null,
+      });
+
+      navigate("/");
+    }
+  };
+
+  useEffect(() => {
+    setState((prevState) => {
+      const newState = { ...prevState };
+      newState.cardNumber.error = error.cardNumber;
+      newState.expirationDate.error = error.expirationDate;
+      newState.cvv.error = error.cvv;
+      newState.name.error = error.name;
+
+      return newState;
+    });
+  }, [error, setState]);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     setIsChecked(true);
     onSubmit(e);
-  };
 
-  // update a user
-  // credit card
+    if (
+      state.cardNumber.isValid &&
+      state.expirationDate.isValid &&
+      state.cvv.isValid &&
+      state.name.isValid &&
+      planName &&
+      isConset
+    ) {
+      submitUserDetails();
+    }
+  };
 
   return (
     <Container>
@@ -150,7 +244,7 @@ const CreditOption = () => {
             checked={isChecked}
             onChange={handleToggle}
           />
-          <SubmitButton text="Start Paid Membership" path={isConset && "/"} />
+          <SubmitButton text="Start Paid Membership" isLoading={isLoading} />
         </form>
       </Transition>
     </Container>

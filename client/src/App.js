@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
+import { useUserDetailsContext } from "./hooks/useUserDetailsContext";
 // pages
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -16,13 +17,13 @@ import CreditOption from "./components/signup/CreditOption";
 
 const App = () => {
   const { user } = useAuthContext();
+  const { userDetails } = useUserDetailsContext();
 
   return (
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        {/* <Route path='/' element={user ? <UserHome /> : <Home />} /> */}
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={user ? <UserHome /> : <Home />} />
         <Route path="/login" element={<Login />} />
         <>
           <Route

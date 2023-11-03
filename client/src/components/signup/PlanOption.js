@@ -71,7 +71,7 @@ const PlanOption = () => {
         return newPlan;
       });
     }
-  }, [planName]);
+  }, [planName, planPrice]);
 
   return (
     <Container>

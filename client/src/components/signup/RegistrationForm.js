@@ -22,7 +22,7 @@ const RegistrationForm = () => {
         return newState;
       });
     }
-  }, []);
+  }, [createdEmail, setState]);
 
   useEffect(() => {
     setState((prevState) => {
@@ -32,7 +32,7 @@ const RegistrationForm = () => {
 
       return newState;
     });
-  }, [error]);
+  }, [error, setState]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

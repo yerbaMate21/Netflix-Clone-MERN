@@ -2,8 +2,8 @@ require("dotenv").config();
 
 const express = require("express");
 const mongoose = require("mongoose");
+const userDetailsRoutes = require("./routes/userDetails");
 const userRoutes = require("./routes/user");
-const creditCardRoutes = require("./routes/creditCard");
 
 const app = express();
 
@@ -14,7 +14,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/creditCard", creditCardRoutes);
+app.use("/api/userDetails", userDetailsRoutes);
 app.use("/api/user", userRoutes);
 
 mongoose
