@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { AiOutlineCreditCard } from "react-icons/ai";
 import useRegistrationForm from "../../hooks/useRegistrationForm";
 import { useUserDetailsContext } from "../../hooks/useUserDetailsContext";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { AiOutlineCreditCard } from "react-icons/ai";
 import visa from "../../assets/img/VISA.png";
 import mastercard from "../../assets/img/MASTERCARD.png";
 import amex from "../../assets/img/AMEX.png";
@@ -15,7 +15,7 @@ import InputContainer from "../InputContainer";
 import formatCardNumber, { CardType } from "./CardType";
 import Checkbox from "./Checkbox";
 
-const CreditOption = () => {
+const UserDetailsForm = () => {
   const navigate = useNavigate();
 
   const [activeCard, setActiveCard] = useState();
@@ -54,9 +54,6 @@ const CreditOption = () => {
 
     if (!user) {
       setError("You must be logged in");
-
-      // ??????????????
-      console.log("You must be logged in");
 
       return;
     }
@@ -251,7 +248,7 @@ const CreditOption = () => {
   );
 };
 
-export default CreditOption;
+export default UserDetailsForm;
 
 const Container = styled.div`
   margin: 2rem auto 10rem auto;

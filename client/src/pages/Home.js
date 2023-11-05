@@ -1,5 +1,8 @@
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useUserDetailsContext } from "../hooks/useUserDetailsContext";
+import UserPage from "./UserPage";
 import Background from "../components/Background";
 import bgImage from "../assets/img/background_home.jpg";
 import Navbar from "../components/Navbar";
@@ -12,36 +15,63 @@ import Divider from "../components/home/Divider";
 import Footer from "../components/home/Footer";
 
 const Home = () => {
+  // is loading
+  const [isLoading, setIsLoading] = useState(null);
+
   const { user } = useAuthContext();
+  const { userDetails, dispatch } = useUserDetailsContext();
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      const response = await fetch("/api/userDetails", {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      const json = await response.json();
+
+      if (response.ok) {
+        dispatch({ type: "SET_USERDETAILS", payload: json });
+      }
+    };
+
+    if (user) {
+      fetchUserDetails();
+    }
+  }, [user, dispatch]);
 
   return (
-    <Container>
-      <div className="top-section">
-        <Background image={bgImage} />
-        <Navbar />
-        <div className="content">
-          <Hero />
-        </div>
-      </div>
-      <div className="bottom-section">
-        <StoryCardsContainer />
-        <FaqSection />
-        <div className="submit-container">
-          {user ? <FinishRegisterButton /> : <CreateEmail />}
-        </div>
-      </div>
+    <>
+      {userDetails && userDetails.length > 0 ? (
+        <UserPage userDetails={userDetails} />
+      ) : (
+        <HomeContainer>
+          <div className="top-section">
+            <Background image={bgImage} />
+            <Navbar />
+            <div className="content">
+              <Hero />
+            </div>
+          </div>
+          <div className="bottom-section">
+            <StoryCardsContainer />
+            <FaqSection />
+            <div className="submit-container">
+              {user ? <FinishRegisterButton /> : <CreateEmail />}
+            </div>
+          </div>
 
-      <footer>
-        <Divider />
-        <Footer />
-      </footer>
-    </Container>
+          <footer>
+            <Divider />
+            <Footer />
+          </footer>
+        </HomeContainer>
+      )}
+    </>
   );
 };
 
 export default Home;
 
-const Container = styled.div`
+const HomeContainer = styled.div`
   .top-section {
     position: relative;
     width: 100%;

@@ -1,11 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useAuthContext } from "./hooks/useAuthContext";
-import { useUserDetailsContext } from "./hooks/useUserDetailsContext";
 // pages
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import UserHome from "./pages/UserHome";
 import NotFound from "./pages/NotFound";
 // components
 import ScrollToTop from "./components/ScrollToTop";
@@ -13,17 +10,14 @@ import Registration from "./components/signup/Registration";
 import RegistrationForm from "./components/signup/RegistrationForm";
 import Plan from "./components/signup/Plan";
 import PlanOption from "./components/signup/PlanOption";
-import CreditOption from "./components/signup/CreditOption";
+import UserDetailsForm from "./components/signup/UserDetailsForm";
 
 const App = () => {
-  const { user } = useAuthContext();
-  const { userDetails } = useUserDetailsContext();
-
   return (
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={user ? <UserHome /> : <Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <>
           <Route
@@ -45,7 +39,7 @@ const App = () => {
           />
           <Route
             path="/signup/creditOption"
-            element={<Signup children={<CreditOption />} />}
+            element={<Signup children={<UserDetailsForm />} />}
           />
         </>
         <Route path="/*" element={<NotFound />} />
