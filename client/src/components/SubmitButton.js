@@ -25,7 +25,15 @@ const SubmitButton = ({ text, path, isLoading }) => {
               : { fontSize: "1.5rem" }
           }
         >
-          {isLoading ? <LoadingSpinner /> : text}
+          {isLoading ? (
+            <LoadingSpinner
+              width="38px"
+              height="38px"
+              color="rgba(255,255,255,0.75)"
+            />
+          ) : (
+            text
+          )}
         </span>
       </button>
     </Container>

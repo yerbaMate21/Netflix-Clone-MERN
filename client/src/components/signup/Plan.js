@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import SubmitButton from "../SubmitButton";
 import { AiOutlineCheckCircle, AiOutlineCheck } from "react-icons/ai";

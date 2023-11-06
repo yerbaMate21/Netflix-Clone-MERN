@@ -1,7 +1,6 @@
-import React from "react";
 import styled from "styled-components";
 
-const SignupFooter = () => {
+const SignLogFooter = () => {
   const itemsData = [
     "FAQ",
     "Help Center",
@@ -30,7 +29,7 @@ const SignupFooter = () => {
   );
 };
 
-export default SignupFooter;
+export default SignLogFooter;
 
 const Container = styled.div`
   main {

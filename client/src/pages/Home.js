@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useUserDetailsContext } from "../hooks/useUserDetailsContext";
+import LoadingPage from "./LoadingPage";
 import UserPage from "./UserPage";
 import Background from "../components/Background";
 import bgImage from "../assets/img/background_home.jpg";
@@ -15,14 +16,15 @@ import Divider from "../components/home/Divider";
 import Footer from "../components/home/Footer";
 
 const Home = () => {
-  // is loading
-  const [isLoading, setIsLoading] = useState(null);
-
   const { user } = useAuthContext();
   const { userDetails, dispatch } = useUserDetailsContext();
 
+  const [isLoading, setIsLoading] = useState(null);
+
   useEffect(() => {
     const fetchUserDetails = async () => {
+      setIsLoading(true);
+
       const response = await fetch("/api/userDetails", {
         headers: { Authorization: `Bearer ${user.token}` },
       });
@@ -30,6 +32,7 @@ const Home = () => {
 
       if (response.ok) {
         dispatch({ type: "SET_USERDETAILS", payload: json });
+        setIsLoading(false);
       }
     };
 
@@ -40,30 +43,35 @@ const Home = () => {
 
   return (
     <>
-      {userDetails && userDetails.length > 0 ? (
-        <UserPage userDetails={userDetails} />
+      {isLoading ? (
+        <LoadingPage />
       ) : (
-        <HomeContainer>
-          <div className="top-section">
-            <Background image={bgImage} />
-            <Navbar />
-            <div className="content">
-              <Hero />
-            </div>
-          </div>
-          <div className="bottom-section">
-            <StoryCardsContainer />
-            <FaqSection />
-            <div className="submit-container">
-              {user ? <FinishRegisterButton /> : <CreateEmail />}
-            </div>
-          </div>
-
-          <footer>
-            <Divider />
-            <Footer />
-          </footer>
-        </HomeContainer>
+        <>
+          {userDetails && userDetails.length > 0 ? (
+            <UserPage userDetails={userDetails} />
+          ) : (
+            <HomeContainer>
+              <div className="top-section">
+                <Background image={bgImage} />
+                <Navbar />
+                <div className="content">
+                  <Hero />
+                </div>
+              </div>
+              <div className="bottom-section">
+                <StoryCardsContainer />
+                <FaqSection />
+                <div className="submit-container">
+                  {user ? <FinishRegisterButton /> : <CreateEmail />}
+                </div>
+              </div>
+              <footer>
+                <Divider />
+                <Footer />
+              </footer>
+            </HomeContainer>
+          )}
+        </>
       )}
     </>
   );

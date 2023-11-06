@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import Divider from "./Divider";
 import FaqAccordion from "./FaqAccordion";

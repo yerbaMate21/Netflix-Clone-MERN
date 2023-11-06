@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import device from "../../assets/img/device";
 import SubmitButton from "../SubmitButton";

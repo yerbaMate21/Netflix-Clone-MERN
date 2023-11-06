@@ -1,10 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-// pages
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
-// components
 import ScrollToTop from "./components/ScrollToTop";
 import Registration from "./components/signup/Registration";
 import RegistrationForm from "./components/signup/RegistrationForm";

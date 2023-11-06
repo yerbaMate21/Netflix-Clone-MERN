@@ -1,11 +1,9 @@
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Background from "../components/Background";
-import bgImage from "../assets/img/background_userHome.jpg";
+import bgImage from "../assets/img/background_userPage.jpg";
 
 const UserPage = ({ userDetails }) => {
-  console.log("User details: =>>>>", userDetails);
-
   return (
     <Container>
       <Navbar />

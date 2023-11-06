@@ -1,4 +1,3 @@
-import React from "react";
 // img
 import enjoyTV from "../../assets/img/enjoyTV.png";
 import download from "../../assets/img/download";

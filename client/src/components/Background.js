@@ -23,7 +23,6 @@ const Container = styled.div`
   height: 100%;
   z-index: -1;
   background-size: cover;
-  background-position: center;
 
   .bg {
     width: 100%;
