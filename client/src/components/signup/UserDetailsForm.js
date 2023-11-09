@@ -134,6 +134,7 @@ const UserDetailsForm = () => {
       isConset
     ) {
       submitUserDetails();
+      localStorage.removeItem("email");
     }
   };
 

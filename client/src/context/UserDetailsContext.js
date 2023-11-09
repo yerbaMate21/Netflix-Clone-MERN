@@ -12,11 +12,9 @@ export const userDetailsReducer = (state, action) => {
       return {
         userDetails: [action.payload, { ...state.userDetails }],
       };
-    case "DELETE_USERDETAILS":
+    case "UPDATE_USERDETAILS":
       return {
-        userDetails: state.userDetails.filter(
-          (u) => u._id !== action.payload._id
-        ),
+        userDetails: [action.payload, state.userDetails],
       };
     default:
       return state;

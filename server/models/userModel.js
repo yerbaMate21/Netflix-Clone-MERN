@@ -12,6 +12,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  likedMovies: Array,
 });
 
 module.exports = mongoose.model("User", userSchema);

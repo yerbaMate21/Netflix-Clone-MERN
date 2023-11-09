@@ -1,20 +1,25 @@
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Background from "../components/Background";
+import Footer from "../components/home/Footer";
 import bgImage from "../assets/img/background_userPage.jpg";
 
 const UserPage = ({ userDetails }) => {
   return (
     <Container>
-      <Navbar />
-      <Background image={bgImage} />
-      <div>
-        {userDetails.map((item) => (
-          <div key={item._id}>
-            <h4>{item.cardName}</h4>
-          </div>
-        ))}
+      <div className="top-section">
+        <Navbar />
+        <Background image={bgImage} />
+        <div>
+          <h3>User Details</h3>
+          {userDetails.map((item) => (
+            <div key={item._id}>
+              <div className="userDetails-item">{item.cardName}</div>
+            </div>
+          ))}
+        </div>
       </div>
+      <Footer />
     </Container>
   );
 };
@@ -22,7 +27,12 @@ const UserPage = ({ userDetails }) => {
 export default UserPage;
 
 const Container = styled.div`
-  h4 {
-    color: magenta;
+  .top-section {
+    height: 100vh;
+    border: 1px solid green;
+
+    .userDetails-item {
+      color: magenta;
+    }
   }
 `;

@@ -2,7 +2,7 @@ const express = require("express");
 const {
   createUserDetails,
   getUserDetails,
-  getUserDetail,
+  updateUserDetails,
 } = require("../controllers/userDetailsController");
 const requireAuth = require("../middleware/requireAuth");
 
@@ -11,9 +11,7 @@ const router = express.Router();
 router.use(requireAuth);
 
 router.get("/", getUserDetails);
-
-router.get("/:id", getUserDetail);
-
 router.post("/", createUserDetails);
+router.patch("/:id", updateUserDetails);
 
 module.exports = router;

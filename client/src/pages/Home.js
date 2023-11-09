@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useUserDetailsContext } from "../hooks/useUserDetailsContext";
 import LoadingPage from "./LoadingPage";
+import Netflix from "./Netflix";
 import UserPage from "./UserPage";
 import Background from "../components/Background";
 import bgImage from "../assets/img/background_home.jpg";
@@ -22,24 +23,24 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(null);
 
   useEffect(() => {
-    const fetchUserDetails = async () => {
-      setIsLoading(true);
-
-      const response = await fetch("/api/userDetails", {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
-      const json = await response.json();
-
-      if (response.ok) {
-        dispatch({ type: "SET_USERDETAILS", payload: json });
-        setIsLoading(false);
-      }
-    };
-
     if (user) {
       fetchUserDetails();
     }
   }, [user, dispatch]);
+
+  const fetchUserDetails = async () => {
+    setIsLoading(true);
+
+    const response = await fetch("/api/userDetails", {
+      headers: { Authorization: `Bearer ${user.token}` },
+    });
+    const json = await response.json();
+
+    if (response.ok) {
+      dispatch({ type: "SET_USERDETAILS", payload: json });
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -48,7 +49,7 @@ const Home = () => {
       ) : (
         <>
           {userDetails && userDetails.length > 0 ? (
-            <UserPage userDetails={userDetails} />
+            <Netflix user={user} userDetails={userDetails} />
           ) : (
             <HomeContainer>
               <div className="top-section">

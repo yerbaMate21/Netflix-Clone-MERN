@@ -1,12 +1,12 @@
-import React from "react";
 import styled from "styled-components";
 import Logo from "./Logo";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useLogout";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  let location = useLocation();
 
   const { user } = useAuthContext();
   const { logout } = useLogout();
@@ -26,7 +26,10 @@ const Navbar = () => {
       <div className="navbar-container flex a-center j-between">
         <Logo />
         {user && <p>{user.email}</p>}
-        <button className="btn" onClick={handleClick}>
+        <button
+          className={location.pathname !== "/" ? "default btn" : "btn"}
+          onClick={handleClick}
+        >
           <span>{user ? "Sign Out" : "Sign In"}</span>
         </button>
       </div>
@@ -41,6 +44,20 @@ const Container = styled.div`
     padding: 0 1.5rem;
     height: 5.5rem;
     line-height: 0;
+
+    .default {
+      color: black;
+      background-color: transparent;
+      font-size: 1.2rem;
+    }
+
+    .default:hover {
+      text-decoration: underline;
+    }
+
+    p {
+      color: green;
+    }
   }
 
   @media only screen and (max-width: 1280px) {

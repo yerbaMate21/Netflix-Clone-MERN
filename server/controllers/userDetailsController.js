@@ -51,20 +51,25 @@ const getUserDetails = async (req, res) => {
   res.status(200).json(userDetails);
 };
 
-const getUserDetail = async (req, res) => {
+const updateUserDetails = async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "No such user detail" });
+    return res.status(404).json({ error: "No such user details" });
   }
 
-  const userDetail = await UserDetails.findById(id);
+  const userDetails = await UserDetails.findOneAndUpdate(
+    { _id: id },
+    {
+      ...req.body,
+    }
+  );
 
-  if (!userDetail) {
-    return res.status(404).json({ error: "No such user detail" });
+  if (!userDetails) {
+    return res.status(400).json({ error: "No such user details" });
   }
 
-  res.status(200).json(userDetail);
+  res.status(200).json(userDetails);
 };
 
-module.exports = { createUserDetails, getUserDetails, getUserDetail };
+module.exports = { createUserDetails, getUserDetails, updateUserDetails };
