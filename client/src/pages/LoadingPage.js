@@ -17,5 +17,19 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(50, 50, 50, 0.3);
+  background-image: linear-gradient(
+    to bottom,
+    #000000,
+    #080506,
+    #0f0b0b,
+    #150f10,
+    #191313,
+    #191313,
+    #191313,
+    #191313,
+    #150f10,
+    #0f0b0b,
+    #080506,
+    #000000
+  );
 `;

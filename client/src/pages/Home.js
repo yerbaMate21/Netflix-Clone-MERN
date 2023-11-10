@@ -4,9 +4,9 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useUserDetailsContext } from "../hooks/useUserDetailsContext";
 import LoadingPage from "./LoadingPage";
 import Netflix from "./Netflix";
-import UserPage from "./UserPage";
 import Background from "../components/Background";
-import bgImage from "../assets/img/background_home.jpg";
+import bgHome from "../assets/img/background_home.jpg";
+import bgBreakingBad from "../assets/img/breakingBad.jpg";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import StoryCardsContainer from "../components/home/StoryCardsContainer";
@@ -53,7 +53,7 @@ const Home = () => {
           ) : (
             <HomeContainer>
               <div className="top-section">
-                <Background image={bgImage} />
+                <Background image={user ? bgBreakingBad : bgHome} />
                 <Navbar />
                 <div className="content">
                   <Hero />
@@ -122,7 +122,7 @@ const HomeContainer = styled.div`
 
   @media screen and (max-width: 600px) {
     .top-section {
-      min-height: 0;
+      min-height: 80vh;
 
       .content {
         margin-top: 2rem;

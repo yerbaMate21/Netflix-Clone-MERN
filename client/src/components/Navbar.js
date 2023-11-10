@@ -25,7 +25,6 @@ const Navbar = () => {
     <Container>
       <div className="navbar-container flex a-center j-between">
         <Logo />
-        {user && <p>{user.email}</p>}
         <button
           className={location.pathname !== "/" ? "default btn" : "btn"}
           onClick={handleClick}

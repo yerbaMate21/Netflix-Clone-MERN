@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
-import Background from "../components/Background";
+import MoviesGrid from "../components/netflix/MoviesGrid";
+import Dividier from "../components/home/Divider";
 import Footer from "../components/home/Footer";
-import bgImage from "../assets/img/background_userPage.jpg";
 import { API_KEY, BASE_URL } from "../utils/constants";
 
 const Netflix = ({ user, userDetails }) => {
@@ -11,10 +11,10 @@ const Netflix = ({ user, userDetails }) => {
   const [isFetched, setIsFetched] = useState(false);
 
   useEffect(() => {
-    getMovies();
+    fetchMovies();
   }, []);
 
-  const getMovies = async () => {
+  const fetchMovies = async () => {
     const response = await fetch(
       `${BASE_URL}/discover/movie?api_key=${API_KEY}`
     );
@@ -24,18 +24,17 @@ const Netflix = ({ user, userDetails }) => {
     setIsFetched(true);
   };
 
-  console.log(movies);
-
   return (
     <Container>
       <div className="top-section">
         <Navbar />
-        <Background image={bgImage} />
-        <h1 className="t-center">Netflix Page</h1>
-        {isFetched && <div className="movies">{movies[0].original_title} </div>}
+        <h3 className="t-center">Netflix Page</h3>
+        {isFetched && <MoviesGrid movies={movies} />}
       </div>
-      <div className="bottom-section">bottom section</div>
-      <Footer />
+      <Dividier />
+      <footer>
+        <Footer />
+      </footer>
     </Container>
   );
 };
@@ -43,12 +42,24 @@ const Netflix = ({ user, userDetails }) => {
 export default Netflix;
 
 const Container = styled.div`
-  .top-section {
-    height: 100vh;
-    border: 1px solid green;
-  }
+  background-image: linear-gradient(
+    to bottom,
+    #000000,
+    #080506,
+    #0f0b0b,
+    #150f10,
+    #191313,
+    #191313,
+    #191313,
+    #191313,
+    #150f10,
+    #0f0b0b,
+    #080506,
+    #000000
+  );
+  height: 100%;
 
-  .bottom-section {
-    border: 1px solid red;
+  footer {
+    background-color: rgba(0, 0, 0, 0.5);
   }
 `;

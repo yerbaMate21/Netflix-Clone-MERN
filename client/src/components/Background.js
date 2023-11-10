@@ -23,6 +23,7 @@ const Container = styled.div`
   height: 100%;
   z-index: -1;
   background-size: cover;
+  background-position: 20% 50%;
 
   .bg {
     width: 100%;
