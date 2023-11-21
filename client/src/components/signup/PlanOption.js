@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { AiOutlineCheck } from "react-icons/ai";
 import useScrollPosition from "../../hooks/useScrollPosition";
-import useElementPosition from "../../hooks/useElementPosition";
+import usePositionElement from "../../hooks/usePositionElement";
 import PlanTable from "./PlanTable";
 import PlanForm from "./PlanForm";
 import SubmitButton from "../SubmitButton";
@@ -13,7 +13,7 @@ const PlanOption = () => {
   const location = useLocation();
   const scrollPosition = useScrollPosition();
   const myRef = useRef();
-  const yPos = useElementPosition(myRef);
+  const yPos = usePositionElement(myRef);
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [plan, setPlan] = useState({

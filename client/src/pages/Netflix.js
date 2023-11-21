@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
-import MoviesGrid from "../components/netflix/MoviesGrid";
+import Slider from "../components/netflix/Slider";
 import Dividier from "../components/home/Divider";
 import Footer from "../components/home/Footer";
 import { API_KEY, BASE_URL } from "../utils/constants";
@@ -16,7 +16,7 @@ const Netflix = ({ user, userDetails }) => {
 
   const fetchMovies = async () => {
     const response = await fetch(
-      `${BASE_URL}/discover/movie?api_key=${API_KEY}`
+      `${BASE_URL}/movie/upcoming?api_key=${API_KEY}`
     );
     const data = await response.json();
 
@@ -25,23 +25,25 @@ const Netflix = ({ user, userDetails }) => {
   };
 
   return (
-    <Container>
-      <div className="top-section">
-        <Navbar />
-        <h3 className="t-center">Netflix Page</h3>
-        {isFetched && <MoviesGrid movies={movies} />}
-      </div>
-      <Dividier />
-      <footer>
-        <Footer />
-      </footer>
-    </Container>
+    <>
+      {isFetched && (
+        <Container>
+          <Navbar />
+          <Slider movies={movies} />
+          <Dividier />
+          <footer>
+            <Footer />
+          </footer>
+        </Container>
+      )}
+    </>
   );
 };
 
 export default Netflix;
 
 const Container = styled.div`
+  height: 100%;
   background-image: linear-gradient(
     to bottom,
     #000000,
@@ -57,7 +59,6 @@ const Container = styled.div`
     #080506,
     #000000
   );
-  height: 100%;
 
   footer {
     background-color: rgba(0, 0, 0, 0.5);
