@@ -47,15 +47,10 @@ const Container = styled.div`
     .default {
       color: black;
       background-color: transparent;
-      font-size: 1.2rem;
     }
 
     .default:hover {
       text-decoration: underline;
-    }
-
-    p {
-      color: green;
     }
   }
 
@@ -68,24 +63,12 @@ const Container = styled.div`
   @media only screen and (max-width: 740px) {
     .navbar-container {
       height: 4.5rem;
-
-      button {
-        span {
-          font-size: 1rem;
-        }
-      }
     }
   }
 
   @media only screen and (max-width: 500px) {
     .navbar-container {
       height: 3.5rem;
-
-      button {
-        span {
-          font-size: 0.9rem;
-        }
-      }
     }
   }
 `;
