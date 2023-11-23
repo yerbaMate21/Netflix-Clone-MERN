@@ -70,6 +70,8 @@ const Container = styled.div`
   }
 
   @media screen and (max-width: 960px) {
+    font-size: 0.8rem;
+
     main {
       .links-container {
         grid-template-rows: repeat(9, 1fr);
