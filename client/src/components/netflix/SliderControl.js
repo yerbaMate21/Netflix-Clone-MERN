@@ -27,8 +27,7 @@ export default SliderControl;
 const Container = styled.div`
   .slider-control {
     position: absolute;
-    padding: 0 0.5rem;
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.05);
     top: 50%;
     transform: translateY(-50%) !important;
     height: 100%;

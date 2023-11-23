@@ -1,13 +1,17 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import SliderControl from "./SliderControl";
 import SliderItem from "./SliderItem";
+import useWindowSize from "../../hooks/useWindowSize";
 
 const Slider = (props) => {
   const [visibleItems, setVisibleItems] = useState(5);
 
   const { movies } = props;
   const totalItems = movies.length;
+
+  const { width } = useWindowSize();
+  console.log(width);
 
   useEffect(() => {
     handleWindowResize(window);
@@ -18,7 +22,7 @@ const Slider = (props) => {
     };
   });
 
-  const handleWindowResize = (e) => {
+  const handleWindowResize = () => {
     if (window.innerWidth >= 1440) {
       setVisibleItems(6);
     } else if (window.innerWidth >= 960) {
@@ -27,17 +31,17 @@ const Slider = (props) => {
       setVisibleItems(4);
     } else if (window.innerWidth >= 600) {
       setVisibleItems(3);
-    } else {
+    } else if (window.innerWidth >= 400) {
       setVisibleItems(2);
+    } else {
+      setVisibleItems(1);
     }
   };
 
   return (
     <Container>
       <div className="slider">
-        <div className="control prev">
-          <FaChevronLeft />
-        </div>
+        <SliderControl arrowDirection="left" />
         <div className="content">
           {movies.map((movie) => (
             <SliderItem
@@ -47,9 +51,7 @@ const Slider = (props) => {
             />
           ))}
         </div>
-        <div className="control next">
-          <FaChevronRight />
-        </div>
+        <SliderControl arrowDirection="right" />
       </div>
     </Container>
   );
@@ -62,23 +64,6 @@ const Container = styled.div`
     position: relative;
     padding: 0 2rem;
     margin: 5rem 0;
-
-    .control {
-      position: absolute;
-      top: 0;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      background-color: rgba(0, 255, 0, 0.3);
-    }
-
-    .prev {
-      left: 0;
-    }
-
-    .next {
-      right: 0;
-    }
 
     .content {
       white-space: nowrap;
