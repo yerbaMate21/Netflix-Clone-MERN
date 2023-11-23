@@ -43,6 +43,7 @@ const Netflix = ({ user, userDetails }) => {
 export default Netflix;
 
 const Container = styled.div`
+  width: 100%;
   height: 100%;
   background-image: linear-gradient(
     to bottom,
