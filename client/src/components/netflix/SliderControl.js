@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
+import { LiaChevronLeftSolid, LiaChevronRightSolid } from "react-icons/lia";
 
 const SliderControl = ({ arrowDirection, onClick }) => {
   return (
@@ -10,11 +10,11 @@ const SliderControl = ({ arrowDirection, onClick }) => {
       >
         {arrowDirection === "right" ? (
           <i>
-            <BsChevronRight />
+            <LiaChevronRightSolid />
           </i>
         ) : (
           <i>
-            <BsChevronLeft />
+            <LiaChevronLeftSolid />
           </i>
         )}
       </div>
@@ -31,18 +31,18 @@ const Container = styled.div`
     top: 50%;
     transform: translateY(-50%) !important;
     height: 100%;
-    width: 2.5rem;
-    background-color: rgb(35, 35, 35);
-    cursor: pointer;
+    width: 4%;
+    min-width: 2rem;
 
     i {
-      transform: scale(1.5);
+      font-size: 2rem;
     }
-  }
 
-  .slider-control:hover i {
-    transform: scale(1.75);
-    transition: 0.2s;
+    i:hover {
+      transform: scale(1.5);
+      transition: 0.2s ease-out;
+      cursor: pointer;
+    }
   }
 
   .left {
@@ -53,9 +53,19 @@ const Container = styled.div`
     right: 0;
   }
 
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: 600px) {
     .slider-control {
-      width: 2rem;
+      i {
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    .slider-control {
+      i {
+        font-size: 1rem;
+      }
     }
   }
 `;

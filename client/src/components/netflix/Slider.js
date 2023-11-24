@@ -108,18 +108,16 @@ const Container = styled.div`
   padding: 3rem 0;
 
   .title {
-    padding: 0 1.5rem;
+    margin: 2% 6%;
+    white-space: nowrap;
   }
 
   .slider {
     position: relative;
-    padding: 0 2.75rem;
-    margin: 1rem 0;
-    border: 1px solid yellow;
+    padding: 0 6%;
 
     .content {
       white-space: nowrap;
-      overflow: hidden;
       line-height: 0;
 
       .item-container {
@@ -141,15 +139,21 @@ const Container = styled.div`
     }
   }
 
-  @media only screen and (max-width: 1280px) {
+  @media only screen and (max-width: 768px) {
     .title {
-      padding: 0 0.5rem;
+      margin: 4% 6%;
     }
   }
 
-  @media screen and (max-width: 960px) {
-    .slider {
-      padding: 0 2.25rem;
+  @media only screen and (max-width: 600px) {
+    .title {
+      margin: 6% 6%;
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    .title {
+      margin: 8% 6%;
     }
   }
 `;
