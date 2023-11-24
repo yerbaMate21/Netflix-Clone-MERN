@@ -96,6 +96,7 @@ const Container = styled.div`
 
   @media screen and (max-width: 600px) {
     margin: 4rem auto;
+    padding: 0 2rem;
 
     .context {
       text-align: left;
