@@ -36,4 +36,10 @@ const Container = styled.div`
     font-size: 1.5rem;
     text-align: center;
   }
+
+  @media screen and (max-width: 600px) {
+    button {
+      font-size: 1rem;
+    }
+  }
 `;
