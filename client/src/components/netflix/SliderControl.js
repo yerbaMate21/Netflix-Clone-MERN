@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 
 const SliderControl = ({ arrowDirection, onClick }) => {
   return (
@@ -10,11 +10,11 @@ const SliderControl = ({ arrowDirection, onClick }) => {
       >
         {arrowDirection === "right" ? (
           <i>
-            <FaChevronRight />
+            <BsChevronRight />
           </i>
         ) : (
           <i>
-            <FaChevronLeft />
+            <BsChevronLeft />
           </i>
         )}
       </div>
@@ -27,14 +27,22 @@ export default SliderControl;
 const Container = styled.div`
   .slider-control {
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.05);
+    z-index: 1;
     top: 50%;
     transform: translateY(-50%) !important;
     height: 100%;
+    width: 2.5rem;
+    background-color: rgb(35, 35, 35);
+    cursor: pointer;
+
+    i {
+      transform: scale(1.5);
+    }
   }
 
   .slider-control:hover i {
-    transform: scale(1.5);
+    transform: scale(1.75);
+    transition: 0.2s;
   }
 
   .left {
@@ -43,5 +51,11 @@ const Container = styled.div`
 
   .right {
     right: 0;
+  }
+
+  @media screen and (max-width: 960px) {
+    .slider-control {
+      width: 2rem;
+    }
   }
 `;
