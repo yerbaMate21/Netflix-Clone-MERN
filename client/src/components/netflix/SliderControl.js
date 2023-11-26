@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { LiaChevronLeftSolid, LiaChevronRightSolid } from "react-icons/lia";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const SliderControl = ({ arrowDirection, onClick }) => {
   return (
@@ -10,11 +10,11 @@ const SliderControl = ({ arrowDirection, onClick }) => {
       >
         {arrowDirection === "right" ? (
           <i>
-            <LiaChevronRightSolid />
+            <FaChevronRight />
           </i>
         ) : (
           <i>
-            <LiaChevronLeftSolid />
+            <FaChevronLeft />
           </i>
         )}
       </div>
@@ -30,7 +30,6 @@ const Container = styled.div`
     z-index: 1;
     top: 50%;
     transform: translateY(-50%) !important;
-    height: 100%;
     width: 4%;
     min-width: 2rem;
 

@@ -4,13 +4,14 @@ import SliderControl from "./SliderControl";
 import SliderItem from "./SliderItem";
 import useWindowSize from "../../hooks/useWindowSize";
 
-const Slider = (props) => {
+const Slider = ({ movies, genre }) => {
   const [itemsInRow, setItemsInRow] = useState(5);
   const [isMoved, setIsMoved] = useState(false);
   const [isMoving, setIsMoving] = useState(false);
   const [moveDirection, setMoveDirection] = useState(null);
 
-  const { movies } = props;
+  // const { movies } = props;
+  // const { category } = props;
   const totalItems = movies.length;
 
   const { width } = useWindowSize();
@@ -81,10 +82,12 @@ const Slider = (props) => {
   return (
     <Container>
       <div className="title">
-        <h4>Popular on Netflix</h4>
+        <h4>{genre}</h4>
       </div>
       <div className="slider">
-        <SliderControl arrowDirection="left" onClick={handlePrev} />
+        {isMoved && (
+          <SliderControl arrowDirection="left" onClick={handlePrev} />
+        )}
         <div className="content" style={style}>
           {movies.map((movie) => (
             <div
@@ -105,10 +108,13 @@ const Slider = (props) => {
 export default Slider;
 
 const Container = styled.div`
-  padding: 3rem 0;
+  display: grid;
+  gap: 12%;
+  padding: 2.5rem 0;
+  // margin-bottom: 1rem;
 
   .title {
-    margin: 2% 6%;
+    margin: 0 6%;
     white-space: nowrap;
   }
 
@@ -136,24 +142,6 @@ const Container = styled.div`
 
     .content:hover .item-container {
       transform: translateX(-12.5%);
-    }
-  }
-
-  @media only screen and (max-width: 768px) {
-    .title {
-      margin: 4% 6%;
-    }
-  }
-
-  @media only screen and (max-width: 600px) {
-    .title {
-      margin: 6% 6%;
-    }
-  }
-
-  @media screen and (max-width: 400px) {
-    .title {
-      margin: 8% 6%;
     }
   }
 `;

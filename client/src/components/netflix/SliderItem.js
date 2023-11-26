@@ -8,6 +8,7 @@ const SliderItem = ({ movie }) => {
       <div className="slider-item">
         <img
           src={`http://image.tmdb.org/t/p/w780${movie.backdrop_path}`}
+          // src={`http://image.tmdb.org/t/p/w780${movie.poster_path}`}
           alt={movie.title}
         />
         <div className="movie-details flex j-center a-center">
