@@ -10,9 +10,8 @@ const Slider = ({ movies, genre }) => {
   const [isMoving, setIsMoving] = useState(false);
   const [moveDirection, setMoveDirection] = useState(null);
 
-  // const { movies } = props;
-  // const { category } = props;
-  const totalItems = movies.length;
+  console.log("movies", movies);
+  console.log("genre", genre);
 
   const { width } = useWindowSize();
 

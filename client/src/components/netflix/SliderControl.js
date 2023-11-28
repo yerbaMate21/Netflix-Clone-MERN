@@ -31,11 +31,10 @@ const Container = styled.div`
     top: 50%;
     transform: translateY(-50%) !important;
     width: 4%;
+    height: 100%;
+    background-color: rgba(30, 30, 30, 0.5);
+    font-size: 150%;
     min-width: 2rem;
-
-    i {
-      font-size: 2rem;
-    }
 
     i:hover {
       transform: scale(1.5);
@@ -50,21 +49,5 @@ const Container = styled.div`
 
   .right {
     right: 0;
-  }
-
-  @media screen and (max-width: 600px) {
-    .slider-control {
-      i {
-        font-size: 1.5rem;
-      }
-    }
-  }
-
-  @media screen and (max-width: 400px) {
-    .slider-control {
-      i {
-        font-size: 1rem;
-      }
-    }
   }
 `;

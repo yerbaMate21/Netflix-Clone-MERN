@@ -9,16 +9,27 @@ import { API_KEY, BASE_URL } from "../utils/constants";
 const Netflix = ({ user, userDetails }) => {
   const [genres, setGenres] = useState([]);
   const [movies, setMovies] = useState([]);
-  const [isFetched, setIsFetched] = useState(false);
+  const [urls, setUrls] = useState([]);
 
   useEffect(() => {
     fetchGenres();
-    fetchMovies();
   }, []);
+
+  useEffect(() => {
+    fetchMovies();
+  }, [urls]);
+
+  useEffect(() => {
+    genres.forEach((genre) => {
+      const newUrls = `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=en-USsort_by=popularity.desc&page=1&with_genres=${genre.id}`;
+
+      setUrls((url) => [...url, newUrls]);
+    });
+  }, [genres]);
 
   const getRandomGenres = (array) => {
     const randomGenres = [...array].sort(() => 0.5 - Math.random());
-    return randomGenres.slice(0, 3);
+    return randomGenres.slice(0, 2);
   };
 
   const fetchGenres = async () => {
@@ -35,39 +46,38 @@ const Netflix = ({ user, userDetails }) => {
     }
   };
 
-  genres.forEach((genre) => {
-    console.log(
-      `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=en-USsort_by=popularity.desc&page=1&with_genres=${genre.id}`
-    );
-  });
-
   const fetchMovies = async () => {
-    const response = await fetch(
-      `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=en-USsort_by=popularity.desc&page=1&with_genres=12`
-    );
-    const data = await response.json();
-
-    setMovies(data.results);
-    setIsFetched(true);
+    try {
+      const results = await Promise.all(
+        urls.map((url) => fetch(url).then((res) => res.json()))
+      );
+      setMovies(results);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <>
-      {isFetched && (
-        <Container>
-          <Navbar />
-          <section>
-            {genres.map((genre) => (
-              <Slider movies={movies} genre={genre.name} key={genre.id} />
+    <Container>
+      <Navbar />
+      <section>
+        {genres.map((genre) => (
+          <div key={genre.id}>
+            {movies.map((movie) => (
+              <Slider
+                movies={movie.results}
+                genre={genre.name}
+                key={movie.id}
+              />
             ))}
-          </section>
-          <Dividier />
-          <footer>
-            <Footer />
-          </footer>
-        </Container>
-      )}
-    </>
+          </div>
+        ))}
+      </section>
+      <Dividier />
+      <footer>
+        <Footer />
+      </footer>
+    </Container>
   );
 };
 
