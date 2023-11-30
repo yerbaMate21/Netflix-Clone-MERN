@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
 const SliderItem = ({ movie }) => {
-  // console.log(movie);
-
   return (
     <Container>
       <div className="slider-item">
@@ -11,8 +9,8 @@ const SliderItem = ({ movie }) => {
           alt={movie.title}
         />
         <div className="movie-details flex j-center a-center">
-          {/* <h6> {movie.title}</h6> */}
-        </div>
+          {/* <div className="title">{movie.title}</div> */}
+        </div>  
       </div>
     </Container>
   );
@@ -22,9 +20,7 @@ export default SliderItem;
 
 const Container = styled.div`
   .slider-item {
-    transition: transform 300ms ease 100ms;
     position: relative;
-    cursor: pointer;
 
     img {
       width: 100%;

@@ -10,9 +10,6 @@ const Slider = ({ movies, genre }) => {
   const [isMoving, setIsMoving] = useState(false);
   const [moveDirection, setMoveDirection] = useState(null);
 
-  console.log("movies", movies);
-  console.log("genre", genre);
-
   const { width } = useWindowSize();
 
   useEffect(() => {
@@ -110,24 +107,24 @@ const Container = styled.div`
   display: grid;
   gap: 12%;
   padding: 2.5rem 0;
-  // margin-bottom: 1rem;
 
   .title {
-    margin: 0 6%;
+    padding: 0 6%;
     white-space: nowrap;
   }
 
   .slider {
     position: relative;
     padding: 0 6%;
+    white-space: nowrap;
 
     .content {
-      white-space: nowrap;
       line-height: 0;
 
       .item-container {
-        transition: transform 300ms ease 100ms;
+        transition: transform 0.3s ease;
         display: inline-block;
+        cursor: pointer;
       }
 
       .item-container:hover ~ .item-container {

@@ -6,14 +6,13 @@ const SliderControl = ({ arrowDirection, onClick }) => {
     <Container>
       <div
         className={`slider-control ${arrowDirection} flex a-center j-center`}
-        onClick={onClick}
       >
         {arrowDirection === "right" ? (
-          <i>
+          <i onClick={onClick}>
             <FaChevronRight />
           </i>
         ) : (
-          <i>
+          <i onClick={onClick}>
             <FaChevronLeft />
           </i>
         )}
@@ -30,16 +29,21 @@ const Container = styled.div`
     z-index: 1;
     top: 50%;
     transform: translateY(-50%) !important;
-    width: 4%;
+    width: 6%;
+    min-width: 1rem;
     height: 100%;
-    background-color: rgba(30, 30, 30, 0.5);
-    font-size: 150%;
-    min-width: 2rem;
+    font-size: 125%;
+    background-color: rgba(10, 10, 10, 0.75);
+
+    i {
+      opacity: 0.5;
+      cursor: pointer;
+    }
 
     i:hover {
-      transform: scale(1.5);
-      transition: 0.2s ease-out;
-      cursor: pointer;
+      transform: scale(1.25);
+      transition: 0.2s ease;
+      opacity: 1;
     }
   }
 

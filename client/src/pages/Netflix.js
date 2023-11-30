@@ -10,6 +10,7 @@ const Netflix = ({ user, userDetails }) => {
   const [genres, setGenres] = useState([]);
   const [movies, setMovies] = useState([]);
   const [urls, setUrls] = useState([]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     fetchGenres();
@@ -27,9 +28,44 @@ const Netflix = ({ user, userDetails }) => {
     });
   }, [genres]);
 
-  const getRandomGenres = (array) => {
-    const randomGenres = [...array].sort(() => 0.5 - Math.random());
-    return randomGenres.slice(0, 2);
+  useEffect(() => {
+    let genresArray = [];
+    let moviesArray = [];
+
+    genres.forEach((genre) => genresArray.push(genre.name));
+    movies.forEach((movie) => moviesArray.push(movie.results));
+
+    const a = moviesArray[0];
+    const b = moviesArray[1];
+    const c = moviesArray[2];
+
+    if (a && b && c) {
+      for (let i = 0; i < a.length; i++) {
+        let a_id = a[i].id;
+        let b_id = b[i].id;
+        let c_id = c[i].id;
+
+        if (a_id === b_id || a_id === c_id || b_id === c_id) {
+          console.log("a", a_id);
+          console.log("b", b_id);
+          console.log("c", c_id);
+        }
+        if (a[i].id == b[i].id) {
+          console.log(a[i].id);
+        }
+      }
+    }
+
+    const zip = genresArray.map(function (e, i) {
+      return [e, moviesArray[i]];
+    });
+
+    setData(zip);
+  }, [movies]);
+
+  const getRandom = (array) => {
+    const random = [...array].sort(() => 0.5 - Math.random());
+    return random.slice(0, 3);
   };
 
   const fetchGenres = async () => {
@@ -39,7 +75,7 @@ const Netflix = ({ user, userDetails }) => {
       );
 
       const data = await response.json();
-      const randomFetchedGenres = getRandomGenres(data.genres);
+      const randomFetchedGenres = getRandom(data.genres);
       setGenres(randomFetchedGenres);
     } catch (error) {
       console.log(error);
@@ -48,10 +84,10 @@ const Netflix = ({ user, userDetails }) => {
 
   const fetchMovies = async () => {
     try {
-      const results = await Promise.all(
+      const data = await Promise.all(
         urls.map((url) => fetch(url).then((res) => res.json()))
       );
-      setMovies(results);
+      setMovies(data);
     } catch (error) {
       console.log(error);
     }
@@ -61,16 +97,8 @@ const Netflix = ({ user, userDetails }) => {
     <Container>
       <Navbar />
       <section>
-        {genres.map((genre) => (
-          <div key={genre.id}>
-            {movies.map((movie) => (
-              <Slider
-                movies={movie.results}
-                genre={genre.name}
-                key={movie.id}
-              />
-            ))}
-          </div>
+        {data.map((d, i) => (
+          <Slider movies={d[1]} genre={d[0]} key={i} />
         ))}
       </section>
       <Dividier />
