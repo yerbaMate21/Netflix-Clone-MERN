@@ -12,12 +12,11 @@ const Navbar = () => {
   const { logout } = useLogout();
 
   const handleClick = () => {
-    if (!user) {
-      navigate("/login");
-    }
     if (user) {
       logout();
       navigate("/");
+    } else {
+      navigate("/login");
     }
   };
 
@@ -44,12 +43,13 @@ const Container = styled.div`
     height: 5.5rem;
     line-height: 0;
 
-    .default {
+    button.default {
+      font-size: 1rem;
       color: black;
       background-color: transparent;
     }
 
-    .default:hover {
+    button.default:hover {
       text-decoration: underline;
     }
   }
