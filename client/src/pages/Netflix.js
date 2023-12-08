@@ -12,6 +12,8 @@ const Netflix = ({ user, userDetails }) => {
   const [urls, setUrls] = useState([]);
   const [data, setData] = useState([]);
 
+  let sliderCount = 10;
+
   useEffect(() => {
     fetchGenres();
   }, []);
@@ -23,38 +25,64 @@ const Netflix = ({ user, userDetails }) => {
   useEffect(() => {
     genres.forEach((genre) => {
       const newUrls = `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=en-USsort_by=popularity.desc&page=1&with_genres=${genre.id}`;
-
       setUrls((url) => [...url, newUrls]);
     });
   }, [genres]);
 
-  useEffect(() => {
-    let genresArray = [];
-    let moviesArray = [];
+  let genresArray = [];
+  let moviesArray = [];
+  let allMoviesIds = [];
+  const splitIndex = allMoviesIds.length / sliderCount;
 
+  useEffect(() => {
     genres.forEach((genre) => genresArray.push(genre.name));
     movies.forEach((movie) => moviesArray.push(movie.results));
 
-    const a = moviesArray[0];
-    const b = moviesArray[1];
-    const c = moviesArray[2];
+    moviesArray.forEach((movie) => {
+      for (let i = 0; i < movie.length; i++) {
+        allMoviesIds.push(movie[i].id);
+      }
+    });
 
-    if (a && b && c) {
-      for (let i = 0; i < a.length; i++) {
-        let a_id = a[i].id;
-        let b_id = b[i].id;
-        let c_id = c[i].id;
+    const duplicateMovies = checkDuplicate(allMoviesIds);
+    const splitIndex = allMoviesIds.length / sliderCount;
+    const separateMoviesIds = chunk(allMoviesIds, splitIndex);
 
-        if (a_id === b_id || a_id === c_id || b_id === c_id) {
-          console.log("a", a_id);
-          console.log("b", b_id);
-          console.log("c", c_id);
-        }
-        if (a[i].id == b[i].id) {
-          console.log(a[i].id);
-        }
+    // all movies ids
+    //console.log("all", allMoviesIds);
+
+    // duplicated movies ids
+    // console.log("duplicate", duplicateMovies);
+
+    // separated movies ids
+    // console.log("separated", separateMoviesIds);
+
+    //#################################//#################################//#################################
+    //#################################//#################################//#################################
+    // check which separated array contains one of duplicates
+
+    for (let i of duplicateMovies) {
+      const found = (element) => element == i;
+
+      for (let j = 0; j < separateMoviesIds.length; j++) {
+        console.log(
+          "duplicate ID:",
+          i,
+          "exist in:",
+          j,
+          "?",
+          separateMoviesIds[j].some(found),
+          "------ duplicates count",
+          duplicateMovies.length,
+          "---slider count:",
+          sliderCount
+        );
+        // delete specific duplicate from array
       }
     }
+    //#################################//#################################//#################################
+    //#################################//#################################//#################################
+    //#################################//#################################//#################################
 
     const zip = genresArray.map(function (e, i) {
       return [e, moviesArray[i]];
@@ -63,9 +91,35 @@ const Netflix = ({ user, userDetails }) => {
     setData(zip);
   }, [movies]);
 
+  const checkDuplicate = (array) => {
+    let obj = {};
+    for (let i = 0; i < array.length; i++) {
+      if (obj[array[i]]) obj[array[i]]++;
+      else obj[array[i]] = 1;
+    }
+
+    let duplicateElements = [];
+    for (let i in obj) {
+      if (obj[i] > 1) {
+        duplicateElements.push(i);
+      }
+    }
+
+    return duplicateElements;
+  };
+
+  const chunk = (arr, size) => {
+    let newArr = [];
+    for (let i = 0; i < arr.length; i += size) {
+      const sliceIt = arr.slice(i, i + size);
+      newArr.push(sliceIt);
+    }
+    return newArr;
+  };
+
   const getRandom = (array) => {
     const random = [...array].sort(() => 0.5 - Math.random());
-    return random.slice(0, 3);
+    return random.slice(0, sliderCount);
   };
 
   const fetchGenres = async () => {
@@ -97,8 +151,8 @@ const Netflix = ({ user, userDetails }) => {
     <Container>
       <Navbar />
       <section>
-        {data.map((d, i) => (
-          <Slider movies={d[1]} genre={d[0]} key={i} />
+        {data.map((d, index) => (
+          <Slider movies={d[1]} genre={d[0]} key={index} />
         ))}
       </section>
       <Dividier />
