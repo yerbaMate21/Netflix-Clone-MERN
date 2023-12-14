@@ -12,7 +12,7 @@ const Netflix = ({ user, userDetails }) => {
   const [urls, setUrls] = useState([]);
   const [data, setData] = useState([]);
 
-  let sliderCount = 10;
+  let sliderCount = 4;
 
   useEffect(() => {
     fetchGenres();
@@ -32,7 +32,6 @@ const Netflix = ({ user, userDetails }) => {
   let genresArray = [];
   let moviesArray = [];
   let allMoviesIds = [];
-  const splitIndex = allMoviesIds.length / sliderCount;
 
   useEffect(() => {
     genres.forEach((genre) => genresArray.push(genre.name));
@@ -45,44 +44,52 @@ const Netflix = ({ user, userDetails }) => {
     });
 
     const duplicateMovies = checkDuplicate(allMoviesIds);
+
     const splitIndex = allMoviesIds.length / sliderCount;
     const separateMoviesIds = chunk(allMoviesIds, splitIndex);
 
-    // all movies ids
-    //console.log("all", allMoviesIds);
-
-    // duplicated movies ids
-    // console.log("duplicate", duplicateMovies);
-
-    // separated movies ids
-    // console.log("separated", separateMoviesIds);
-
-    //#################################//#################################//#################################
-    //#################################//#################################//#################################
-    // check which separated array contains one of duplicates
+    let duplicateObjectsArray = [];
 
     for (let i of duplicateMovies) {
       const found = (element) => element == i;
-
       for (let j = 0; j < separateMoviesIds.length; j++) {
-        console.log(
-          "duplicate ID:",
-          i,
-          "exist in:",
-          j,
-          "?",
-          separateMoviesIds[j].some(found),
-          "------ duplicates count",
-          duplicateMovies.length,
-          "---slider count:",
-          sliderCount
-        );
-        // delete specific duplicate from array
+        const booleanValue = separateMoviesIds[j].some(found);
+        if (booleanValue === true) {
+          let obj = { id: i, index: j };
+          duplicateObjectsArray.push(obj);
+        }
       }
     }
-    //#################################//#################################//#################################
-    //#################################//#################################//#################################
-    //#################################//#################################//#################################
+
+    let objectsToRemove = [];
+
+    for (let i = 0; i < duplicateObjectsArray.length - 1; i++) {
+      if (duplicateObjectsArray[i].id === duplicateObjectsArray[i + 1].id) {
+        let obj = {
+          id: duplicateObjectsArray[i].id,
+          index: duplicateObjectsArray[i + 1].index,
+        };
+        objectsToRemove.push(obj);
+      }
+    }
+
+    // remove duplicates
+    if (objectsToRemove.length > 0) {
+      for (let i = 0; i < moviesArray.length; i++) {
+        for (let j of objectsToRemove) {
+          if (i === j.index) {
+            for (let k of moviesArray[i]) {
+              if (j.id == k.id) {
+                const findIndex = moviesArray[i].findIndex(
+                  (obj) => obj.id === k.id
+                );
+                findIndex !== -1 && moviesArray[i].splice(findIndex, 1);
+              }
+            }
+          }
+        }
+      }
+    }
 
     const zip = genresArray.map(function (e, i) {
       return [e, moviesArray[i]];
