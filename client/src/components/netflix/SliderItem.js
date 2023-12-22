@@ -20,8 +20,8 @@ const SliderItem = ({ movie }) => {
             isHover && "detailed"
           } movie-details flex j-center a-center`}
         >
-          <div className="slider-item-title">
-            <span>{movie.title}</span>
+          <div className="title flex j-center a-center t-center">
+            {movie.title}
           </div>
         </div>
       </div>
@@ -49,15 +49,21 @@ const Container = styled.div`
       height: 100%;
       background-color: rgba(0, 0, 0, 0);
 
-      .slider-item-title {
+      .title {
         width: 100%;
         height: 100%;
+        padding: 0 12.5%;
         opacity: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 1rem;
-        font-size: 1rem;
+        line-height: 1;
+        white-space: break-spaces;
+
+        @media screen and (max-width: 200px) {
+          font-size: 0.75rem;
+        }
+
+        @media screen and (max-width: 1280px) and (min-width: 960px) {
+          font-size: 1rem;
+        }
       }
     }
 
@@ -65,7 +71,7 @@ const Container = styled.div`
       background-color: rgba(0, 0, 0, 0.5);
       transition: all 0.3s ease;
 
-      .slider-item-title {
+      .title {
         opacity: 1;
         transition: all 0.3s ease;
       }
