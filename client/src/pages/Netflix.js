@@ -12,7 +12,7 @@ const Netflix = ({ user, userDetails }) => {
   const [urls, setUrls] = useState([]);
   const [data, setData] = useState([]);
 
-  let sliderCount = 4;
+  let sliderCount = 3;
 
   useEffect(() => {
     fetchGenres();

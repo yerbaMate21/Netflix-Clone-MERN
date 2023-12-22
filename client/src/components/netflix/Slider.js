@@ -10,7 +10,11 @@ const Slider = ({ movies, genre }) => {
   const [isMoving, setIsMoving] = useState(false);
   const [moveDirection, setMoveDirection] = useState(null);
 
+  const [movePercentage, setMovePercentage] = useState(0);
+  const [lowestVisibleIndex, setLowestVisibleIndex] = useState(0);
+
   const { width } = useWindowSize();
+  const totalItems = movies.length;
 
   useEffect(() => {
     handleWindowResize();
@@ -32,20 +36,131 @@ const Slider = ({ movies, genre }) => {
     }
   };
 
+  const renderSliderContent = () => {
+    const left = [];
+    const mid = [];
+    const right = [];
+
+    for (let i = 0; i < itemsInRow; i++) {
+      // left
+      if (isMoved) {
+        if (lowestVisibleIndex + i - itemsInRow < 0) {
+          left.push(totalItems - itemsInRow + lowestVisibleIndex + i);
+        } else {
+          left.push(i + lowestVisibleIndex - itemsInRow);
+        }
+      }
+
+      // mid
+      if (i + lowestVisibleIndex >= totalItems) {
+        mid.push(i + lowestVisibleIndex - totalItems);
+      } else {
+        mid.push(i + lowestVisibleIndex);
+      }
+
+      // right
+      if (i + lowestVisibleIndex + itemsInRow >= totalItems) {
+        right.push(i + lowestVisibleIndex + itemsInRow - totalItems);
+      } else {
+        right.push(i + lowestVisibleIndex + itemsInRow);
+      }
+    }
+
+    const indexToDisplay = [...left, ...mid, ...right];
+
+    if (isMoved) {
+      const trailingIndex =
+        indexToDisplay[indexToDisplay.length - 1] === totalItems - 1
+          ? 0
+          : indexToDisplay[indexToDisplay.length - 1] + 1;
+      const leadingIndex =
+        indexToDisplay[0] === 0 ? totalItems - 1 : indexToDisplay[0] - 1;
+
+      indexToDisplay.unshift(leadingIndex);
+      indexToDisplay.push(trailingIndex);
+    }
+
+    const sliderContents = [];
+    for (let index of indexToDisplay) {
+      sliderContents.push(
+        <div
+          className="item-container"
+          key={`${movies[index].id}-${index}`}
+          style={{ width: `${100 / itemsInRow}%` }}
+        >
+          <SliderItem movie={movies[index]} />
+        </div>
+      );
+    }
+
+    if (!isMoved) {
+      for (let i = 0; i < itemsInRow; i++) {
+        sliderContents.unshift(
+          <div
+            className="item-container"
+            key={i}
+            style={{ width: `${100 / itemsInRow}%` }}
+          />
+        );
+      }
+    }
+
+    return sliderContents;
+  };
+
   const handlePrev = () => {
+    let newIndex;
+    if (lowestVisibleIndex < itemsInRow && lowestVisibleIndex !== 0) {
+      newIndex = 0;
+    } else if (lowestVisibleIndex - itemsInRow < 0) {
+      newIndex = totalItems - itemsInRow;
+    } else {
+      newIndex = lowestVisibleIndex - itemsInRow;
+    }
+
+    let newMovePercentage;
+    if (lowestVisibleIndex === 0) {
+      newMovePercentage = 0;
+    } else if (lowestVisibleIndex - newIndex < itemsInRow) {
+      newMovePercentage =
+        ((itemsInRow - (lowestVisibleIndex - newIndex)) / itemsInRow) * 100;
+    } else {
+      newMovePercentage = 0;
+    }
+
     setIsMoving(true);
     setMoveDirection("left");
+    setMovePercentage(newMovePercentage);
 
     setTimeout(() => {
+      setLowestVisibleIndex(newIndex);
       setIsMoving(false);
     }, 750);
   };
 
   const handleNext = () => {
+    let newIndex;
+    if (lowestVisibleIndex === totalItems - itemsInRow) {
+      newIndex = 0;
+    } else if (lowestVisibleIndex + itemsInRow > totalItems - itemsInRow) {
+      newIndex = totalItems - itemsInRow;
+    } else {
+      newIndex = lowestVisibleIndex + itemsInRow;
+    }
+
+    let newMovePercentage;
+    if (newIndex !== 0) {
+      newMovePercentage = ((newIndex - lowestVisibleIndex) / itemsInRow) * 100;
+    } else {
+      newMovePercentage = 100;
+    }
+
     setIsMoving(true);
     setMoveDirection("right");
+    setMovePercentage(newMovePercentage);
 
     setTimeout(() => {
+      setLowestVisibleIndex(newIndex);
       setIsMoving(false);
     }, 750);
 
@@ -55,14 +170,12 @@ const Slider = ({ movies, genre }) => {
   };
 
   let style = {};
-
   if (isMoving) {
     let translate = "";
-
     if (moveDirection === "right") {
-      translate = "translateX(-100%)";
+      translate = `translateX(-${100 + movePercentage + 100 / itemsInRow}%)`;
     } else if (moveDirection === "left") {
-      translate = "translateX(100%)";
+      translate = `translateX(-${movePercentage + 100 / itemsInRow}%)`;
     }
 
     style = {
@@ -71,7 +184,7 @@ const Slider = ({ movies, genre }) => {
     };
   } else {
     style = {
-      transform: `translateX(${isMoved ? 100 / itemsInRow : 0}%)`,
+      transform: `translateX(-${100 + (isMoved ? 100 / itemsInRow : 0)}%)`,
     };
   }
 
@@ -85,15 +198,7 @@ const Slider = ({ movies, genre }) => {
           <SliderControl arrowDirection="left" onClick={handlePrev} />
         )}
         <div className="content" style={style}>
-          {movies.map((movie) => (
-            <div
-              className="item-container"
-              key={movie.id}
-              style={{ width: `${100 / itemsInRow}%` }}
-            >
-              <SliderItem movie={movie} />
-            </div>
-          ))}
+          {renderSliderContent()}
         </div>
         <SliderControl arrowDirection="right" onClick={handleNext} />
       </div>
