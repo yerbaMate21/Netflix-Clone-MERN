@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Slider from "../components/netflix/Slider";
+import Movie from "../components/netflix/Movie";
 import Dividier from "../components/home/Divider";
 import Footer from "../components/home/Footer";
 import { API_KEY, BASE_URL } from "../utils/constants";
@@ -11,6 +12,7 @@ const Netflix = ({ user, userDetails }) => {
   const [movies, setMovies] = useState([]);
   const [urls, setUrls] = useState([]);
   const [data, setData] = useState([]);
+  const [openMovie, setOpenMovie] = useState(null);
 
   let sliderCount = 3;
 
@@ -28,6 +30,16 @@ const Netflix = ({ user, userDetails }) => {
       setUrls((url) => [...url, newUrls]);
     });
   }, [genres]);
+
+  useEffect(() => {
+    scrollToTop();
+  }, [openMovie]);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  };
+
+  const handleMovie = () => {};
 
   let genresArray = [];
   let moviesArray = [];
@@ -157,9 +169,15 @@ const Netflix = ({ user, userDetails }) => {
   return (
     <Container>
       <Navbar />
+      <Movie movie={openMovie} />
       <section>
         {data.map((d, index) => (
-          <Slider movies={d[1]} genre={d[0]} key={index} />
+          <Slider
+            movies={d[1]}
+            genre={d[0]}
+            key={index}
+            setOpenMovie={setOpenMovie}
+          />
         ))}
       </section>
       <Dividier />
@@ -193,7 +211,7 @@ const Container = styled.div`
 
   section {
     margin-top: 1rem;
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
   }
 
   footer {

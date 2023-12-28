@@ -4,12 +4,11 @@ import SliderControl from "./SliderControl";
 import SliderItem from "./SliderItem";
 import useWindowSize from "../../hooks/useWindowSize";
 
-const Slider = ({ movies, genre }) => {
-  const [itemsInRow, setItemsInRow] = useState(5);
+const Slider = ({ movies, genre, setOpenMovie }) => {
+  const [itemsInRow, setItemsInRow] = useState(6);
   const [isMoved, setIsMoved] = useState(false);
   const [isMoving, setIsMoving] = useState(false);
   const [moveDirection, setMoveDirection] = useState(null);
-
   const [movePercentage, setMovePercentage] = useState(0);
   const [lowestVisibleIndex, setLowestVisibleIndex] = useState(0);
 
@@ -22,17 +21,15 @@ const Slider = ({ movies, genre }) => {
 
   const handleWindowResize = () => {
     if (width >= 1440) {
-      setItemsInRow(6);
+      setItemsInRow(7);
     } else if (width >= 960) {
-      setItemsInRow(5);
+      setItemsInRow(6);
     } else if (width >= 768) {
-      setItemsInRow(4);
+      setItemsInRow(5);
     } else if (width >= 600) {
-      setItemsInRow(3);
-    } else if (width >= 400) {
-      setItemsInRow(2);
+      setItemsInRow(4);
     } else {
-      setItemsInRow(1);
+      setItemsInRow(3);
     }
   };
 
@@ -85,10 +82,11 @@ const Slider = ({ movies, genre }) => {
       sliderContents.push(
         <div
           className="item-container"
-          key={`${movies[index].id}-${index}`}
+          // key={`${movies[index].id}-${index}`}
+          key={movies[index].id}
           style={{ width: `${100 / itemsInRow}%` }}
         >
-          <SliderItem movie={movies[index]} />
+          <SliderItem movie={movies[index]} setOpenMovie={setOpenMovie} />
         </div>
       );
     }

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 
-const SliderItem = ({ movie }) => {
+const SliderItem = ({ movie, setOpenMovie }) => {
   const [isHover, setIsHover] = useState(false);
 
   return (
@@ -10,20 +10,17 @@ const SliderItem = ({ movie }) => {
         className="slider-item"
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
+        onClick={() => setOpenMovie(movie)}
       >
         <img
-          src={`http://image.tmdb.org/t/p/w780${movie.backdrop_path}`}
+          src={`http://image.tmdb.org/t/p/w780${movie.poster_path}`}
           alt={movie.title}
         />
         <div
           className={`${
             isHover && "detailed"
           } movie-details flex j-center a-center`}
-        >
-          <div className="title flex j-center a-center t-center">
-            {movie.title}
-          </div>
-        </div>
+        ></div>
       </div>
     </Container>
   );
@@ -47,12 +44,11 @@ const Container = styled.div`
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0);
 
       .title {
         width: 100%;
         height: 100%;
-        padding: 0 12.5%;
+        padding: 10%;
         opacity: 0;
         line-height: 1;
         white-space: break-spaces;
@@ -68,13 +64,7 @@ const Container = styled.div`
     }
 
     .movie-details.detailed {
-      background-color: rgba(0, 0, 0, 0.5);
       transition: all 0.3s ease;
-
-      .title {
-        opacity: 1;
-        transition: all 0.3s ease;
-      }
     }
   }
 `;

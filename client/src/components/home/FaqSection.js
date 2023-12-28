@@ -84,13 +84,10 @@ const FaqSection = () => {
 export default FaqSection;
 
 const Container = styled.div`
-  background-color: black;
-
   h1 {
     padding: 3rem 1rem 2rem 1rem;
     text-align: center;
     display: flex;
     justify-content: center;
-    background-color: black;
   }
 `;
