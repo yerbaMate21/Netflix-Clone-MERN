@@ -4,7 +4,7 @@ import SliderControl from "./SliderControl";
 import SliderItem from "./SliderItem";
 import useWindowSize from "../../hooks/useWindowSize";
 
-const Slider = ({ movies, genre, setOpenMovie }) => {
+const Slider = ({ movies, genre, handleMovie }) => {
   const [itemsInRow, setItemsInRow] = useState(6);
   const [isMoved, setIsMoved] = useState(false);
   const [isMoving, setIsMoving] = useState(false);
@@ -82,11 +82,10 @@ const Slider = ({ movies, genre, setOpenMovie }) => {
       sliderContents.push(
         <div
           className="item-container"
-          // key={`${movies[index].id}-${index}`}
           key={movies[index].id}
           style={{ width: `${100 / itemsInRow}%` }}
         >
-          <SliderItem movie={movies[index]} setOpenMovie={setOpenMovie} />
+          <SliderItem movie={movies[index]} handleMovie={handleMovie} />
         </div>
       );
     }

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 
-const SliderItem = ({ movie, setOpenMovie }) => {
+const SliderItem = ({ movie, handleMovie }) => {
   const [isHover, setIsHover] = useState(false);
 
   return (
@@ -10,7 +10,7 @@ const SliderItem = ({ movie, setOpenMovie }) => {
         className="slider-item"
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
-        onClick={() => setOpenMovie(movie)}
+        onClick={() => handleMovie(movie)}
       >
         <img
           src={`http://image.tmdb.org/t/p/w780${movie.poster_path}`}

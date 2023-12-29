@@ -59,7 +59,7 @@ const Container = styled.div`
   .movie-container {
     position: relative;
     width: 100%;
-    min-width: 200px;
+    min-width: 250px;
     height: 80vh;
     background-size: cover;
     background-position: 50% 0;
@@ -98,6 +98,7 @@ const Container = styled.div`
         }
 
         .overview {
+          font-size: 1.2rem;
           color: rgba(255, 255, 255, 0.7);
         }
 
@@ -139,13 +140,29 @@ const Container = styled.div`
       }
     }
   }
+  @media only screen and (max-width: 600px) {
+    .movie-container {
+      .description {
+        .details {
+          padding: 2rem 0;
+          width: 85%;
+        }
+      }
+    }
+  }
 
   @media only screen and (max-width: 400px) {
     .movie-container {
       .description {
         .details {
-          padding: 2rem 0;
+          padding: 1rem 0;
           width: 100%;
+
+          .title {
+          }
+
+          .info {
+          }
 
           .controls {
             .play,

@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Slider from "../components/netflix/Slider";
 import Movie from "../components/netflix/Movie";
-import Background from "../components/Background";
 import Dividier from "../components/home/Divider";
 import Footer from "../components/home/Footer";
 import { API_KEY, BASE_URL } from "../utils/constants";
@@ -31,14 +30,6 @@ const Netflix = ({ user, userDetails }) => {
       setUrls((url) => [...url, newUrls]);
     });
   }, [genres]);
-
-  useEffect(() => {
-    scrollToTop();
-  }, [openMovie]);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  };
 
   let genresArray = [];
   let moviesArray = [];
@@ -165,6 +156,15 @@ const Netflix = ({ user, userDetails }) => {
     }
   };
 
+  const handleMovie = (movie) => {
+    setOpenMovie(movie);
+    scrollToTop();
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  };
+
   return (
     <Container>
       <Navbar />
@@ -175,7 +175,7 @@ const Netflix = ({ user, userDetails }) => {
             movies={d[1]}
             genre={d[0]}
             key={index}
-            setOpenMovie={setOpenMovie}
+            handleMovie={handleMovie}
           />
         ))}
       </section>
