@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Slider from "../components/netflix/Slider";
 import Movie from "../components/netflix/Movie";
+import Background from "../components/Background";
 import Dividier from "../components/home/Divider";
 import Footer from "../components/home/Footer";
 import { API_KEY, BASE_URL } from "../utils/constants";
@@ -38,8 +39,6 @@ const Netflix = ({ user, userDetails }) => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   };
-
-  const handleMovie = () => {};
 
   let genresArray = [];
   let moviesArray = [];
@@ -210,8 +209,7 @@ const Container = styled.div`
   );
 
   section {
-    margin-top: 1rem;
-    margin-bottom: 4rem;
+    margin-bottom: 8rem;
   }
 
   footer {
