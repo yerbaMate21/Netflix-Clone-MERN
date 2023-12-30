@@ -15,7 +15,7 @@ const Movie = ({ movie }) => {
             }}
           >
             <div className="description">
-              <div className="details flex">
+              <div className="details flex j-center">
                 <div className="title">
                   <h1>{movie.title}</h1>
                 </div>
@@ -25,10 +25,12 @@ const Movie = ({ movie }) => {
                     <i>
                       <FaStar />
                     </i>
-                    <p>{movie.vote_average}</p>
+                    <span>{movie.vote_average}</span>
                   </div>
                 </div>
-                <div className="overview">{movie.overview}</div>
+                <div className="overview">
+                  <span>{movie.overview}</span>
+                </div>
                 <div className="controls flex">
                   <button className="btn play">
                     <i>
@@ -59,7 +61,7 @@ const Container = styled.div`
   .movie-container {
     position: relative;
     width: 100%;
-    min-width: 250px;
+    min-width: 220px;
     height: 80vh;
     background-size: cover;
     background-position: 50% 0;
@@ -73,19 +75,18 @@ const Container = styled.div`
       height: 100%;
       background: linear-gradient(
         to right,
-        rgba(0, 0, 0, 0.8) 25%,
-        rgba(0, 0, 0, 0.5) 50%,
-        rgba(0, 0, 0, 0.25) 75%,
+        rgba(0, 0, 0, 0.9) 5%,
+        rgba(0, 0, 0, 0.5) 70%,
+        rgba(0, 0, 0, 0.25) 80%,
         rgba(0, 0, 0, 0) 100%
       );
 
       .details {
         flex-direction: column;
         gap: 1.5rem;
-        padding: 4rem 0;
-        width: 100%;
         width: 50%;
         height: 100%;
+        line-height: 1;
 
         .info {
           gap: 1rem;
@@ -98,7 +99,6 @@ const Container = styled.div`
         }
 
         .overview {
-          font-size: 1.2rem;
           color: rgba(255, 255, 255, 0.7);
         }
 
@@ -108,9 +108,9 @@ const Container = styled.div`
           .play,
           .like {
             display: flex;
+            align-items: center;
             line-height: 1;
             gap: 0.5rem;
-            font-size: 1.2rem;
           }
           .play {
             background-color: rgba(255, 255, 255, 1);
@@ -126,6 +126,10 @@ const Container = styled.div`
             background-color: rgba(255, 255, 255, 0.5);
           }
         }
+
+        span {
+          font-size: 1.2rem;
+        }
       }
     }
   }
@@ -134,8 +138,12 @@ const Container = styled.div`
     .movie-container {
       .description {
         .details {
+          gap: 1rem;
           padding: 3rem 0;
-          width: 75%;
+
+          span {
+            font-size: 1rem;
+          }
         }
       }
     }
@@ -145,7 +153,7 @@ const Container = styled.div`
       .description {
         .details {
           padding: 2rem 0;
-          width: 85%;
+          width: 100%;
         }
       }
     }
@@ -156,20 +164,6 @@ const Container = styled.div`
       .description {
         .details {
           padding: 1rem 0;
-          width: 100%;
-
-          .title {
-          }
-
-          .info {
-          }
-
-          .controls {
-            .play,
-            .like {
-              font-size: 1rem;
-            }
-          }
         }
       }
     }
