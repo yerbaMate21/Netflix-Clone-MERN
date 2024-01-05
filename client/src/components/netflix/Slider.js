@@ -188,7 +188,7 @@ const Slider = ({ movies, genre, handleMovie }) => {
   return (
     <Container>
       <div className="title">
-        <h4>{genre}</h4>
+        <h3>{genre}</h3>
       </div>
       <div className="slider">
         {isMoved && (

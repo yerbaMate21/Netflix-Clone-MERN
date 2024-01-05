@@ -1,57 +1,92 @@
 import styled from "styled-components";
+import { useState, useEffect } from "react";
 import Divider from "../home/Divider";
+import VideoContainer from "./VideoContainer";
+import { API_KEY, BASE_URL } from "../../utils/constants";
 import { FaPlay, FaPlus, FaStar } from "react-icons/fa";
 
-const Movie = ({ movie }) => {
+const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
+  const [videoKey, setVideoKey] = useState(null);
+
+  useEffect(() => {
+    fetchVideo();
+  }, [movie]);
+
+  const handleAdd = () => {
+    console.log("Add movie to playlist");
+  };
+
+  const fetchVideo = async () => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/movie/${movie.id}/videos?api_key=${API_KEY}`
+      );
+
+      const data = await response.json();
+      const videoKey = data.results[0].key;
+      setVideoKey(videoKey);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <>
-      {movie && (
-        <Container>
-          <Divider />
-          <div
-            className="movie-container"
-            style={{
-              backgroundImage: `url("http://image.tmdb.org/t/p/w780${movie.backdrop_path}")`,
-            }}
-          >
-            <div className="description">
-              <div className="details flex j-center">
-                <div className="title">
-                  <h1>{movie.title}</h1>
+    <Container>
+      <Divider />
+      <div className="movie-container">
+        <div
+          className="background"
+          style={{
+            backgroundImage: `url("http://image.tmdb.org/t/p/w780${movie.backdrop_path}")`,
+          }}
+        ></div>
+        <div
+          className={`bg-shadow ${videoIsOpen ? "bg-dark" : "bg-light"}`}
+        ></div>
+        {!videoIsOpen && (
+          <div className="description flex j-center column">
+            <div className="title">
+              <h1>{movie.title}</h1>
+            </div>
+            <div className="details flex">
+              <h3>{movie.release_date.slice(0, 4)}</h3>
+              <div className="box flex a-end">
+                <div className="rate flex a-center">
+                  <i>
+                    <FaStar />
+                  </i>
+                  <h2>{movie.vote_average}</h2>
                 </div>
-                <div className="info flex">
-                  <div className="date">{movie.release_date.slice(0, 4)}</div>
-                  <div className="rate flex a-center">
-                    <i>
-                      <FaStar />
-                    </i>
-                    <span>{movie.vote_average}</span>
-                  </div>
-                </div>
-                <div className="overview">
-                  <span>{movie.overview}</span>
-                </div>
-                <div className="controls flex">
-                  <button className="btn play">
-                    <i>
-                      <FaPlay />
-                    </i>
-                    <span>Play</span>
-                  </button>
-                  <button className="btn like">
-                    <i>
-                      <FaPlus />
-                    </i>
-                    <span>My list</span>
-                  </button>
-                </div>
+                <div className="reviews">{movie.vote_count}&nbsp;reviews</div>
               </div>
             </div>
+            <div className="controls flex">
+              <button className="btn play" onClick={() => setVideoIsOpen(true)}>
+                <i>
+                  <FaPlay />
+                </i>
+                <span>Play Now</span>
+              </button>
+              <button className="btn like" onClick={handleAdd}>
+                <i>
+                  <FaPlus />
+                </i>
+                <span>My list</span>
+              </button>
+            </div>
+            <div className="overview">{movie.overview}</div>
           </div>
-          <Divider />
-        </Container>
-      )}
-    </>
+        )}
+        {videoIsOpen && (
+          <VideoContainer
+            movie={movie}
+            videoKey={videoKey}
+            setVideoIsOpen={setVideoIsOpen}
+          />
+        )}
+      </div>
+      <Divider />
+    </Container>
   );
 };
 
@@ -61,109 +96,129 @@ const Container = styled.div`
   .movie-container {
     position: relative;
     width: 100%;
-    min-width: 220px;
-    height: 80vh;
-    background-size: cover;
-    background-position: 50% 0;
+    height: 70vh;
 
+    .background,
+    .bg-shadow,
     .description {
-      padding: 0 6%;
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(
-        to right,
-        rgba(0, 0, 0, 0.9) 5%,
-        rgba(0, 0, 0, 0.5) 70%,
-        rgba(0, 0, 0, 0.25) 80%,
-        rgba(0, 0, 0, 0) 100%
+    }
+
+    .background {
+      left: 50%;
+      transform: translate(-50%);
+      background-position-x: center;
+      background-position-y: 33%;
+      background-size: cover;
+    }
+
+    .bg-light {
+      background: radial-gradient(
+        circle,
+        rgba(0, 0, 0, 0.5) 0%,
+        rgba(0, 0, 0, 0.4) 30%,
+        rgba(0, 0, 0, 1) 100%
       );
+    }
+
+    .bg-dark {
+      background: radial-gradient(
+        circle,
+        rgba(0, 0, 0, 0.5) 0%,
+        rgba(0, 0, 0, 0.75) 5%,
+        rgba(0, 0, 0, 1) 100%
+      );
+    }
+
+    .description {
+      width: 60%;
+      padding: 0 6%;
+      gap: 1.25rem;
+      line-height: 1;
 
       .details {
-        flex-direction: column;
-        gap: 1.5rem;
-        width: 50%;
-        height: 100%;
-        line-height: 1;
+        gap: 0.75rem;
+        line-height: 0;
+        align-items: center;
 
-        .info {
-          gap: 1rem;
-
-          .rate {
-            line-height: 0;
-            gap: 0.25rem;
-            color: #e87c03;
-          }
-        }
-
-        .overview {
-          color: rgba(255, 255, 255, 0.7);
-        }
-
-        .controls {
+        .box {
           gap: 0.5rem;
 
-          .play,
-          .like {
-            display: flex;
-            align-items: center;
-            line-height: 1;
-            gap: 0.5rem;
-          }
-          .play {
-            background-color: rgba(255, 255, 255, 1);
-            color: black;
+          .rate i {
+            color: #e87c03;
           }
 
-          .like {
-            background-color: rgba(255, 255, 255, 0.25);
-          }
-
-          .play:hover,
-          .like:hover {
-            background-color: rgba(255, 255, 255, 0.5);
-          }
-        }
-
-        span {
-          font-size: 1.2rem;
-        }
-      }
-    }
-  }
-
-  @media only screen and (max-width: 768px) {
-    .movie-container {
-      .description {
-        .details {
-          gap: 1rem;
-          padding: 3rem 0;
-
-          span {
+          .reviews {
+            color: rgba(255, 255, 255, 0.7);
             font-size: 1rem;
+            margin-bottom: 0.25rem;
+
+            @media only screen and (max-width: 960px) {
+              font-size: 0.8rem;
+            }
           }
         }
       }
-    }
-  }
-  @media only screen and (max-width: 600px) {
-    .movie-container {
-      .description {
-        .details {
-          padding: 2rem 0;
-          width: 100%;
+
+      .controls {
+        gap: 0.5rem;
+        min-width: 10rem;
+
+        .play,
+        .like {
+          display: flex;
+          align-items: center;
+          line-height: 1;
+          gap: 0.5rem;
+        }
+        .play {
+          background-color: rgba(255, 255, 255, 1);
+          color: black;
+        }
+
+        .like {
+          background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .play:hover,
+        .like:hover {
+          background-color: rgba(255, 255, 255, 0.5);
+        }
+      }
+
+      .overview {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 1.2rem;
+
+        @media only screen and (max-width: 960px) {
+          font-size: 1rem;
+        }
+      }
+
+      span {
+        font-size: 1.2rem;
+
+        @media only screen and (max-width: 960px) {
+          font-size: 1rem;
         }
       }
     }
   }
 
-  @media only screen and (max-width: 400px) {
+  @media only screen and (max-width: 500px) {
     .movie-container {
       .description {
-        .details {
-          padding: 1rem 0;
+        width: 100%;
+        align-items: center;
+        text-align: center;
+        padding: 0.5rem;
+
+        .controls {
+          flex-direction: column;
         }
       }
     }

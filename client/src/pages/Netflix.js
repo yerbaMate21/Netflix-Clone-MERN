@@ -7,12 +7,13 @@ import Dividier from "../components/home/Divider";
 import Footer from "../components/home/Footer";
 import { API_KEY, BASE_URL } from "../utils/constants";
 
-const Netflix = ({ user, userDetails }) => {
+const Netflix = () => {
   const [genres, setGenres] = useState([]);
   const [movies, setMovies] = useState([]);
   const [urls, setUrls] = useState([]);
   const [data, setData] = useState([]);
   const [openMovie, setOpenMovie] = useState(null);
+  const [videoIsOpen, setVideoIsOpen] = useState(false);
 
   let sliderCount = 3;
 
@@ -158,6 +159,7 @@ const Netflix = ({ user, userDetails }) => {
 
   const handleMovie = (movie) => {
     setOpenMovie(movie);
+    setVideoIsOpen(false);
     scrollToTop();
   };
 
@@ -168,7 +170,15 @@ const Netflix = ({ user, userDetails }) => {
   return (
     <Container>
       <Navbar />
-      <Movie movie={openMovie} />
+      <header>
+        {openMovie && (
+          <Movie
+            movie={openMovie}
+            videoIsOpen={videoIsOpen}
+            setVideoIsOpen={setVideoIsOpen}
+          />
+        )}
+      </header>
       <section>
         {data.map((d, index) => (
           <Slider
@@ -191,6 +201,7 @@ export default Netflix;
 
 const Container = styled.div`
   width: 100%;
+  min-width: 300px;
   height: 100%;
   background-image: linear-gradient(
     to bottom,

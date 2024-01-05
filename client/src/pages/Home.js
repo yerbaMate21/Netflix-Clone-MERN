@@ -49,7 +49,7 @@ const Home = () => {
       ) : (
         <>
           {userDetails && userDetails.length > 0 ? (
-            <Netflix user={user} userDetails={userDetails} />
+            <Netflix />
           ) : (
             <HomeContainer>
               <div className="top-section">
