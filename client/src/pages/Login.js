@@ -70,7 +70,7 @@ const Login = () => {
           <SubmitButton text="Sign In" isLoading={isLoading} />
         </form>
         <div className="text">
-          <span>New to Netflix?&nbsp;</span>
+          <span>New to Netflix?&nbsp;&nbsp;</span>
           <Link to="/">Sign up now.</Link>
         </div>
       </section>
