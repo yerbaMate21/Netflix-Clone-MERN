@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import Divider from "../home/Divider";
 import VideoContainer from "./VideoContainer";
 import { API_KEY, BASE_URL } from "../../utils/constants";
@@ -11,6 +12,8 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
   useEffect(() => {
     fetchVideo();
   }, [movie]);
+
+  const { user } = useAuthContext();
 
   const handleAdd = () => {
     console.log("Add movie to playlist");
