@@ -47,7 +47,11 @@ const Navbar = () => {
             </div>
           )}
           <button
-            className={location.pathname !== "/" ? "default btn" : "btn"}
+            className={
+              location.pathname === "/" || location.pathname === `/${userName}`
+                ? "btn"
+                : "btn default "
+            }
             onClick={handleClick}
           >
             <span>{user ? "Sign Out" : "Sign In"}</span>
