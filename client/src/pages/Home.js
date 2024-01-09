@@ -26,7 +26,7 @@ const Home = () => {
     if (user) {
       fetchUserDetails();
     }
-  }, [user, dispatch]);
+  }, [user]);
 
   const fetchUserDetails = async () => {
     setIsLoading(true);

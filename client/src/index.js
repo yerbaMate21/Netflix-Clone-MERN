@@ -4,12 +4,15 @@ import "./index.scss";
 import App from "./App";
 import { AuthContextProvider } from "./context/AuthContext";
 import { UserDetailsContextProvider } from "./context/UserDetailsContext";
+import { LikedMoviesContextProvider } from "./context/LikedMoviesContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthContextProvider>
       <UserDetailsContextProvider>
-        <App />
+        <LikedMoviesContextProvider>
+          <App />
+        </LikedMoviesContextProvider>
       </UserDetailsContextProvider>
     </AuthContextProvider>
   </React.StrictMode>

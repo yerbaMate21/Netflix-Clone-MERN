@@ -1,22 +1,40 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { useAuthContext } from "../../hooks/useAuthContext";
 import Divider from "../home/Divider";
 import VideoContainer from "./VideoContainer";
+import AlertWindow from "../AlertWindow";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import { useLikedMoviesContext } from "../../hooks/useLikedMoviesContext";
 import { API_KEY, BASE_URL } from "../../utils/constants";
 import { FaPlay, FaPlus, FaStar } from "react-icons/fa";
 
 const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
+  const { user } = useAuthContext();
+  const { likedMovies, dispatch } = useLikedMoviesContext();
+
   const [videoKey, setVideoKey] = useState(null);
+  const [isAlertShown, setIsAlertShown] = useState(false);
 
   useEffect(() => {
     fetchVideo();
   }, [movie]);
 
-  const { user } = useAuthContext();
+  const handleAdd = async () => {
+    const email = user.email;
+    const data = movie;
 
-  const handleAdd = () => {
-    console.log("Add movie to playlist");
+    const response = await fetch("/api/user/add", {
+      method: "POST",
+      body: JSON.stringify({ email, data }),
+      headers: { "Content-Type": "application/json" },
+    });
+    const json = await response.json();
+
+    if (response.ok) {
+      dispatch({ type: "ADD_LIKEDMOVIES", payload: json });
+      setIsAlertShown(true);
+      setTimeout(() => setIsAlertShown(false), 2000);
+    }
   };
 
   const fetchVideo = async () => {
@@ -44,7 +62,9 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
           }}
         ></div>
         <div
-          className={`bg-shadow ${videoIsOpen ? "bg-dark" : "bg-light"}`}
+          className={`bg-shadow ${
+            videoIsOpen || isAlertShown ? "bg-dark" : "bg-light"
+          }`}
         ></div>
         {!videoIsOpen && (
           <div className="description flex j-center column">
@@ -85,6 +105,12 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
             movie={movie}
             videoKey={videoKey}
             setVideoIsOpen={setVideoIsOpen}
+          />
+        )}
+        {likedMovies && (
+          <AlertWindow
+            message={likedMovies[0].message}
+            showAlert={isAlertShown}
           />
         )}
       </div>
