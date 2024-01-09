@@ -1,15 +1,23 @@
 import styled from "styled-components";
 import Logo from "./Logo";
+import { FaRegUserCircle } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useLogout";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  let location = useLocation();
+  const location = useLocation();
 
   const { user } = useAuthContext();
   const { logout } = useLogout();
+
+  let userName = "";
+
+  if (user) {
+    const email = user.email;
+    userName = email.substring(0, email.lastIndexOf("@"));
+  }
 
   const handleClick = () => {
     if (user) {
@@ -24,12 +32,27 @@ const Navbar = () => {
     <Container>
       <div className="navbar-container flex a-center j-between">
         <Logo />
-        <button
-          className={location.pathname !== "/" ? "default btn" : "btn"}
-          onClick={handleClick}
-        >
-          <span>{user ? "Sign Out" : "Sign In"}</span>
-        </button>
+        <div className="controls flex a-center">
+          {user && (
+            <div
+              className="user-info flex a-center"
+              onClick={() => navigate(`/${userName}`)}
+            >
+              <i>
+                <FaRegUserCircle />
+              </i>
+              <div className="user-name">
+                <h5>{userName}</h5>
+              </div>
+            </div>
+          )}
+          <button
+            className={location.pathname !== "/" ? "default btn" : "btn"}
+            onClick={handleClick}
+          >
+            <span>{user ? "Sign Out" : "Sign In"}</span>
+          </button>
+        </div>
       </div>
     </Container>
   );
@@ -43,14 +66,33 @@ const Container = styled.div`
     height: 5.5rem;
     line-height: 0;
 
-    button.default {
-      font-size: 1rem;
-      color: black;
-      background-color: transparent;
-    }
+    .controls {
+      gap: 1.5rem;
 
-    button.default:hover {
-      text-decoration: underline;
+      .user-info {
+        gap: 0.25rem;
+        color: rgba(255, 255, 255, 0.75);
+        cursor: pointer;
+        transition: 0.2s color;
+
+        i {
+          font-size: 1.75rem;
+        }
+      }
+
+      .user-info:hover {
+        color: rgba(255, 255, 255, 1);
+      }
+
+      button.default {
+        font-size: 1rem;
+        color: black;
+        background-color: transparent;
+      }
+
+      button.default:hover {
+        text-decoration: underline;
+      }
     }
   }
 
@@ -69,6 +111,14 @@ const Container = styled.div`
   @media only screen and (max-width: 500px) {
     .navbar-container {
       height: 3.5rem;
+
+      .controls {
+        .user-info {
+          .user-name {
+            display: none;
+          }
+        }
+      }
     }
   }
 `;
