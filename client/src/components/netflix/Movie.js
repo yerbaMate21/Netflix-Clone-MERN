@@ -7,6 +7,7 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { useLikedMoviesContext } from "../../hooks/useLikedMoviesContext";
 import { API_KEY, BASE_URL } from "../../utils/constants";
 import { FaPlay, FaPlus, FaStar } from "react-icons/fa";
+import LoadingPage from "../../pages/LoadingPage";
 
 const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
   const { user } = useAuthContext();
@@ -14,28 +15,11 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
 
   const [videoKey, setVideoKey] = useState(null);
   const [isAlertShown, setIsAlertShown] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetchVideo();
   }, [movie]);
-
-  const handleAdd = async () => {
-    const email = user.email;
-    const data = movie;
-
-    const response = await fetch("/api/user/add", {
-      method: "POST",
-      body: JSON.stringify({ email, data }),
-      headers: { "Content-Type": "application/json" },
-    });
-    const json = await response.json();
-
-    if (response.ok) {
-      dispatch({ type: "ADD_LIKEDMOVIES", payload: json });
-      setIsAlertShown(true);
-      setTimeout(() => setIsAlertShown(false), 2000);
-    }
-  };
 
   const fetchVideo = async () => {
     try {
@@ -51,70 +35,102 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
     }
   };
 
+  const handleAdd = async () => {
+    setIsLoading(true);
+
+    const email = user.email;
+    const data = movie;
+
+    const response = await fetch("/api/user/add", {
+      method: "POST",
+      body: JSON.stringify({ email, data }),
+      headers: { "Content-Type": "application/json" },
+    });
+    const json = await response.json();
+
+    if (response.ok) {
+      dispatch({ type: "ADD_LIKEDMOVIES", payload: json });
+      setIsLoading(false);
+      setIsAlertShown(true);
+      setTimeout(() => setIsAlertShown(false), 2500);
+    }
+  };
+
   return (
     <Container>
-      <Divider />
-      <div className="movie-container">
-        <div
-          className="background"
-          style={{
-            backgroundImage: `url("http://image.tmdb.org/t/p/w780${movie.backdrop_path}")`,
-          }}
-        ></div>
-        <div
-          className={`bg-shadow ${
-            videoIsOpen || isAlertShown ? "bg-dark" : "bg-light"
-          }`}
-        ></div>
-        {!videoIsOpen && (
-          <div className="description flex j-center column">
-            <div className="title">
-              <h1>{movie.title}</h1>
-            </div>
-            <div className="details flex">
-              <h3>{movie.release_date.slice(0, 4)}</h3>
-              <div className="box flex a-end">
-                <div className="rate flex a-center">
-                  <i>
-                    <FaStar />
-                  </i>
-                  <h2>{movie.vote_average}</h2>
+      {isLoading ? (
+        <LoadingPage />
+      ) : (
+        <>
+          <Divider />
+          <div className="movie-container">
+            <div
+              className="background"
+              style={{
+                backgroundImage: `url("http://image.tmdb.org/t/p/w780${movie.backdrop_path}")`,
+              }}
+            ></div>
+            <div
+              className={`bg-shadow ${
+                videoIsOpen || isAlertShown ? "bg-dark" : "bg-light"
+              }`}
+            ></div>
+            {!videoIsOpen && (
+              <div className="description flex j-center column">
+                <div className="title">
+                  <h1>{movie.title}</h1>
                 </div>
-                <div className="reviews">{movie.vote_count}&nbsp;reviews</div>
+                <div className="details flex">
+                  <h3>{movie.release_date.slice(0, 4)}</h3>
+                  <div className="box flex a-end">
+                    <div className="rate flex a-center">
+                      <i>
+                        <FaStar />
+                      </i>
+                      <h2>{movie.vote_average}</h2>
+                    </div>
+                    <div className="reviews">
+                      {movie.vote_count}&nbsp;reviews
+                    </div>
+                  </div>
+                </div>
+                <div className="controls flex">
+                  <button
+                    className="btn play"
+                    onClick={() => setVideoIsOpen(true)}
+                  >
+                    <i>
+                      <FaPlay />
+                    </i>
+                    <span>Play Now</span>
+                  </button>
+                  <button className="btn like" onClick={handleAdd}>
+                    <i>
+                      <FaPlus />
+                    </i>
+                    <span>My list</span>
+                  </button>
+                </div>
+                <div className="overview">{movie.overview}</div>
               </div>
-            </div>
-            <div className="controls flex">
-              <button className="btn play" onClick={() => setVideoIsOpen(true)}>
-                <i>
-                  <FaPlay />
-                </i>
-                <span>Play Now</span>
-              </button>
-              <button className="btn like" onClick={handleAdd}>
-                <i>
-                  <FaPlus />
-                </i>
-                <span>My list</span>
-              </button>
-            </div>
-            <div className="overview">{movie.overview}</div>
+            )}
+            {videoIsOpen && (
+              <VideoContainer
+                movie={movie}
+                videoKey={videoKey}
+                setVideoIsOpen={setVideoIsOpen}
+              />
+            )}
+            {likedMovies && (
+              <AlertWindow
+                message={likedMovies[0].message}
+                showAlert={isAlertShown}
+              />
+            )}
           </div>
-        )}
-        {videoIsOpen && (
-          <VideoContainer
-            movie={movie}
-            videoKey={videoKey}
-            setVideoIsOpen={setVideoIsOpen}
-          />
-        )}
-        {likedMovies && (
-          <AlertWindow
-            message={likedMovies[0].message}
-            showAlert={isAlertShown}
-          />
-        )}
-      </div>
-      <Divider />
+          <Divider />
+        </>
+      )}
     </Container>
   );
 };

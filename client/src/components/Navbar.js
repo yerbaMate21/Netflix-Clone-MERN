@@ -35,7 +35,9 @@ const Navbar = () => {
         <div className="controls flex a-center">
           {user && (
             <div
-              className="user-info flex a-center"
+              className={`user-info flex a-center ${
+                location.pathname === `/${userName}` && "lightning"
+              }`}
               onClick={() => navigate(`/${userName}`)}
             >
               <i>
@@ -75,7 +77,7 @@ const Container = styled.div`
 
       .user-info {
         gap: 0.25rem;
-        color: rgba(255, 255, 255, 0.75);
+        color: rgba(255, 255, 255, 0.5);
         cursor: pointer;
         transition: 0.2s color;
 
@@ -85,6 +87,10 @@ const Container = styled.div`
       }
 
       .user-info:hover {
+        color: rgba(255, 255, 255, 1);
+      }
+
+      .user-info.lightning {
         color: rgba(255, 255, 255, 1);
       }
 

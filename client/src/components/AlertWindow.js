@@ -4,8 +4,8 @@ const AlertWindow = ({ message, showAlert }) => {
   return (
     <Container>
       {showAlert && (
-        <div className="alert-window">
-          <h4>{message}</h4>
+        <div className="alert-window flex a-center j-center">
+          <h5>{message}</h5>
         </div>
       )}
     </Container>
@@ -22,10 +22,10 @@ const Container = styled.div`
     transform: translate(-50%, -50%);
     z-index: 1000;
     padding: 1.5%;
+    min-height: 3rem;
     text-align: center;
     border-radius: 0.25rem;
-    background-color: white;
-    color: black;
-    box-shadow: 0 0 15px 10px rgba(0, 0, 0, 0.5);
+    background-color: #f83637;
+    box-shadow: 0 0 30px 15px rgba(0, 0, 0, 0.5);
   }
 `;

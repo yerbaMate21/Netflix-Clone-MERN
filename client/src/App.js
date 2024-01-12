@@ -51,7 +51,7 @@ const App = () => {
             element={<Signup children={<UserDetailsForm />} />}
           />
         </>
-        <Route path={`/${userName}`} element={<UserPage />} />
+        <Route path={`/${userName}`} element={<UserPage user={user} />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

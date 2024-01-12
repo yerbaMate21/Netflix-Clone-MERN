@@ -1,18 +1,18 @@
 const User = require("../models/userModel");
 
-module.exports.getLikedMovies = async (req, res) => {
+const getLikedMovies = async (req, res) => {
   try {
     const { email } = req.params;
     const user = await User.findOne({ email });
     if (user) {
-      return res.json({ message: "success", movies: user.likedMovies });
-    } else return res.json({ message: "User with given email not found." });
+      res.status(200).json(user.likedMovies);
+    } else return res.status(404).json({ error: "User not found" });
   } catch (error) {
-    return res.json({ message: "Error fetching movies." });
+    res.status(400).json({ error: error.message });
   }
 };
 
-module.exports.addToLikedMovies = async (req, res) => {
+const addToLikedMovies = async (req, res) => {
   try {
     const { email, data } = req.body;
     const user = await User.findOne({ email });
@@ -36,7 +36,7 @@ module.exports.addToLikedMovies = async (req, res) => {
   }
 };
 
-module.exports.removeFromLikedMovies = async (req, res) => {
+const removeFromLikedMovies = async (req, res) => {
   try {
     const { email, movieId } = req.body;
     const user = await User.findOne({ email });
@@ -60,3 +60,5 @@ module.exports.removeFromLikedMovies = async (req, res) => {
     return res.json({ message: "Error removing movie to the liked list" });
   }
 };
+
+module.exports = { getLikedMovies, addToLikedMovies, removeFromLikedMovies };
