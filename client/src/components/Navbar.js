@@ -3,6 +3,7 @@ import Logo from "./Logo";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useUserDetailsContext } from "../hooks/useUserDetailsContext";
 import { useLogout } from "../hooks/useLogout";
 
 const Navbar = () => {
@@ -10,6 +11,7 @@ const Navbar = () => {
   const location = useLocation();
 
   const { user } = useAuthContext();
+  const { userDetails } = useUserDetailsContext();
   const { logout } = useLogout();
 
   let userName = "";
@@ -33,7 +35,7 @@ const Navbar = () => {
       <div className="navbar-container flex a-center j-between">
         <Logo />
         <div className="controls flex a-center">
-          {user && (
+          {user && userDetails && userDetails.length > 0 && (
             <div
               className={`user-info flex a-center ${
                 location.pathname === `/${userName}` && "lightning"

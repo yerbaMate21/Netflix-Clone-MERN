@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useLikedMoviesContext } from "../hooks/useLikedMoviesContext";
-import Navbar from "../components/Navbar";
-import Background from "../components/Background";
-import Footer from "../components/home/Footer";
 import LoadingPage from "./LoadingPage";
-import bgImage from "../assets/img/background_home.jpg";
+import Navbar from "../components/Navbar";
+import Divider from "../components/home/Divider";
+import Footer from "../components/home/Footer";
 import Slider from "../components/netflix/Slider";
 
 const UserPage = ({ user }) => {
@@ -34,11 +33,9 @@ const UserPage = ({ user }) => {
     }
   };
 
-  useEffect(() => {
-    if (likedMovies) {
-      console.log(likedMovies.length);
-    }
-  }, [likedMovies]);
+  const handleMovie = () => {
+    console.log("Open Movie Details");
+  };
 
   return (
     <Container>
@@ -47,18 +44,9 @@ const UserPage = ({ user }) => {
       ) : (
         <div className="top-section">
           <Navbar />
-          <Background image={bgImage} />
-          <h3>{user.email}</h3>
-          {likedMovies && (
-            <Slider />
-            // <span>
-            //   {likedMovies.map((movie) => (
-            //     <h6>{movie.title}</h6>
-            //   ))}
-            // </span>
-          )}
         </div>
       )}
+      <Divider />
       <Footer />
     </Container>
   );
@@ -68,6 +56,7 @@ export default UserPage;
 
 const Container = styled.div`
   .top-section {
-    height: 100vh;
+    height: 100%;
+    margin-bottom: 3rem;
   }
 `;
