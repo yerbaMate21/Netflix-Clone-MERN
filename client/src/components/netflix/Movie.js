@@ -13,6 +13,8 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
   const { user } = useAuthContext();
   const { likedMovies, dispatch } = useLikedMoviesContext();
 
+  console.log("liked movies movie ", likedMovies);
+
   const [videoKey, setVideoKey] = useState(null);
   const [isAlertShown, setIsAlertShown] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +37,7 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
     }
   };
 
-  const handleAdd = async () => {
+  const handleAddToLiked = async () => {
     setIsLoading(true);
 
     const email = user.email;
@@ -104,7 +106,7 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
                     </i>
                     <span>Play Now</span>
                   </button>
-                  <button className="btn like" onClick={handleAdd}>
+                  <button className="btn like" onClick={handleAddToLiked}>
                     <i>
                       <FaPlus />
                     </i>
@@ -121,7 +123,7 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
                 setVideoIsOpen={setVideoIsOpen}
               />
             )}
-            {likedMovies && (
+            {likedMovies && likedMovies.length > 0 && (
               <AlertWindow
                 message={likedMovies[0].message}
                 showAlert={isAlertShown}
@@ -164,8 +166,8 @@ const Container = styled.div`
     .bg-light {
       background: radial-gradient(
         circle,
-        rgba(0, 0, 0, 0.5) 0%,
-        rgba(0, 0, 0, 0.4) 30%,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 0, 0, 0.2) 30%,
         rgba(0, 0, 0, 1) 100%
       );
     }
@@ -211,7 +213,6 @@ const Container = styled.div`
 
       .controls {
         gap: 0.5rem;
-        min-width: 10rem;
 
         .play,
         .like {
@@ -220,6 +221,7 @@ const Container = styled.div`
           line-height: 1;
           gap: 0.5rem;
         }
+
         .play {
           background-color: rgba(255, 255, 255, 1);
           color: black;

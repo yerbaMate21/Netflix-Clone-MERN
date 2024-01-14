@@ -1,4 +1,4 @@
-import { createContext, useReducer, useRef } from "react";
+import { createContext, useReducer } from "react";
 
 export const LikedMoviesContext = createContext();
 

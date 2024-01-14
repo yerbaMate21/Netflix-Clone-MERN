@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import Logo from "./Logo";
-import { FaRegUserCircle } from "react-icons/fa";
+import { AiOutlineUser, AiOutlineLike } from "react-icons/ai";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useUserDetailsContext } from "../hooks/useUserDetailsContext";
+import { useLikedMoviesContext } from "../hooks/useLikedMoviesContext";
 import { useLogout } from "../hooks/useLogout";
 
 const Navbar = () => {
@@ -12,6 +13,7 @@ const Navbar = () => {
 
   const { user } = useAuthContext();
   const { userDetails } = useUserDetailsContext();
+  const { likedMovies } = useLikedMoviesContext();
   const { logout } = useLogout();
 
   let userName = "";
@@ -38,15 +40,30 @@ const Navbar = () => {
           {user && userDetails && userDetails.length > 0 && (
             <div
               className={`user-info flex a-center ${
+                location.pathname === `/` && "lightning"
+              }`}
+              onClick={() => navigate("/")}
+            >
+              <i>
+                <AiOutlineUser />
+              </i>
+              <div className="user-name">
+                <h5>{userName}</h5>
+              </div>
+            </div>
+          )}
+          {likedMovies && likedMovies.length > 0 && (
+            <div
+              className={`liked flex a-center ${
                 location.pathname === `/${userName}` && "lightning"
               }`}
               onClick={() => navigate(`/${userName}`)}
             >
               <i>
-                <FaRegUserCircle />
+                <AiOutlineLike />
               </i>
-              <div className="user-name">
-                <h5>{userName}</h5>
+              <div className="text">
+                <h5>my playlist</h5>
               </div>
             </div>
           )}
@@ -77,7 +94,8 @@ const Container = styled.div`
     .controls {
       gap: 1.5rem;
 
-      .user-info {
+      .user-info,
+      .liked {
         gap: 0.25rem;
         color: rgba(255, 255, 255, 0.5);
         cursor: pointer;
@@ -88,12 +106,15 @@ const Container = styled.div`
         }
       }
 
-      .user-info:hover {
+      .user-info:hover,
+      .liked:hover {
         color: rgba(255, 255, 255, 1);
       }
 
-      .user-info.lightning {
+      .user-info.lightning,
+      .liked.lightning {
         color: rgba(255, 255, 255, 1);
+        cursor: default;
       }
 
       button.default {
@@ -125,8 +146,16 @@ const Container = styled.div`
       height: 3.5rem;
 
       .controls {
+        gap: 0.75rem;
+
         .user-info {
           .user-name {
+            display: none;
+          }
+        }
+
+        .liked {
+          .text {
             display: none;
           }
         }

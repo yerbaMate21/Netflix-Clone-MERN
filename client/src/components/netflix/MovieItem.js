@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { useState } from "react";
 
-const SliderItem = ({ movie, handleMovie }) => {
+const MovieItem = ({ movie, handleMovie }) => {
   const [isHover, setIsHover] = useState(false);
 
   return (
     <Container>
       <div
-        className="slider-item"
+        className="movie-item"
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
         onClick={() => handleMovie(movie)}
@@ -26,10 +26,10 @@ const SliderItem = ({ movie, handleMovie }) => {
   );
 };
 
-export default SliderItem;
+export default MovieItem;
 
 const Container = styled.div`
-  .slider-item {
+  .movie-item {
     position: sticky;
 
     img {

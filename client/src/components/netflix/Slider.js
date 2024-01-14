@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import SliderControl from "./SliderControl";
-import SliderItem from "./SliderItem";
+import MovieItem from "./MovieItem";
 import useWindowSize from "../../hooks/useWindowSize";
 
 const Slider = ({ movies, genre, handleMovie }) => {
@@ -85,7 +85,7 @@ const Slider = ({ movies, genre, handleMovie }) => {
           key={movies[index].id}
           style={{ width: `${100 / itemsInRow}%` }}
         >
-          <SliderItem movie={movies[index]} handleMovie={handleMovie} />
+          <MovieItem movie={movies[index]} handleMovie={handleMovie} />
         </div>
       );
     }

@@ -26,7 +26,7 @@ const App = () => {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route exact path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <>
           <Route
@@ -37,7 +37,11 @@ const App = () => {
             path="/signup/regform"
             element={<Signup children={<RegistrationForm />} />}
           />
-          <Route path="/signup" element={<Signup children={<Plan />} />} />
+          <Route
+            exact
+            path="/signup"
+            element={<Signup children={<Plan />} />}
+          />
           <Route
             path="/signup/plan"
             element={<Signup children={<PlanOption />} />}
