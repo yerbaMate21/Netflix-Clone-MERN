@@ -1,20 +1,22 @@
 import styled from "styled-components";
-import Logo from "./Logo";
-import { AiOutlineUser, AiOutlineLike } from "react-icons/ai";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useUserDetailsContext } from "../hooks/useUserDetailsContext";
 import { useLikedMoviesContext } from "../hooks/useLikedMoviesContext";
 import { useLogout } from "../hooks/useLogout";
+import Logo from "./Logo";
+import LoadingPage from "../pages/LoadingPage";
+import { BiUserCircle, BiLike, BiMoviePlay } from "react-icons/bi";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
   const { user } = useAuthContext();
-  const { userDetails } = useUserDetailsContext();
+  const { userDetails, dispatch } = useUserDetailsContext();
   const { likedMovies } = useLikedMoviesContext();
   const { logout } = useLogout();
+  const [isLoading, setIsLoading] = useState(false);
 
   let userName = "";
 
@@ -22,6 +24,26 @@ const Navbar = () => {
     const email = user.email;
     userName = email.substring(0, email.lastIndexOf("@"));
   }
+
+  useEffect(() => {
+    if (user) {
+      fetchUserDetails();
+    }
+  }, [user]);
+
+  const fetchUserDetails = async () => {
+    setIsLoading(true);
+
+    const response = await fetch("/api/userDetails", {
+      headers: { Authorization: `Bearer ${user.token}` },
+    });
+    const json = await response.json();
+
+    if (response.ok) {
+      dispatch({ type: "SET_USERDETAILS", payload: json });
+      setIsLoading(false);
+    }
+  };
 
   const handleClick = () => {
     if (user) {
@@ -33,53 +55,77 @@ const Navbar = () => {
   };
 
   return (
-    <Container>
-      <div className="navbar-container flex a-center j-between">
-        <Logo />
-        <div className="controls flex a-center">
-          {user && userDetails && userDetails.length > 0 && (
-            <div
-              className={`user-info flex a-center ${
-                location.pathname === `/` && "lightning"
-              }`}
-              onClick={() => navigate("/")}
-            >
-              <i>
-                <AiOutlineUser />
-              </i>
-              <div className="user-name">
-                <h5>{userName}</h5>
-              </div>
+    <>
+      {isLoading ? (
+        <LoadingPage />
+      ) : (
+        <Container>
+          <div className="navbar-container flex a-center j-between">
+            <Logo />
+            <div className="controls flex a-center">
+              <>
+                {userDetails && userDetails.length > 0 && (
+                  <div
+                    className={`top-movies flex a-center ${
+                      location.pathname === `/` && "lightning"
+                    }`}
+                    onClick={() => navigate("/")}
+                  >
+                    <i>
+                      <BiMoviePlay />
+                    </i>
+                    <div className="text">
+                      <h5>top movies</h5>
+                    </div>
+                  </div>
+                )}
+              </>
+              <>
+                {likedMovies && likedMovies.length > 0 && (
+                  <div
+                    className={`liked flex a-center ${
+                      location.pathname === `/${userName}/liked` && "lightning"
+                    }`}
+                    onClick={() => navigate(`/${userName}/liked`)}
+                  >
+                    <i>
+                      <BiLike />
+                    </i>
+                    <div className="text">
+                      <h5>my playlist</h5>
+                    </div>
+                  </div>
+                )}
+              </>
+              <>
+                {user && (
+                  <div className="user-info flex a-center">
+                    <i>
+                      <BiUserCircle />
+                    </i>
+                    <div className="text">
+                      <h6>{userName}</h6>
+                    </div>
+                  </div>
+                )}
+              </>
+              <button
+                className={
+                  location.pathname === "/" ||
+                  location.pathname === `/${userName}` ||
+                  location.pathname === `/${userName}/liked`
+                    ? "btn"
+                    : "btn default "
+                }
+                onClick={handleClick}
+              >
+                <span>{user ? "Sign Out" : "Sign In"}</span>
+              </button>
             </div>
-          )}
-          {likedMovies && likedMovies.length > 0 && (
-            <div
-              className={`liked flex a-center ${
-                location.pathname === `/${userName}` && "lightning"
-              }`}
-              onClick={() => navigate(`/${userName}`)}
-            >
-              <i>
-                <AiOutlineLike />
-              </i>
-              <div className="text">
-                <h5>my playlist</h5>
-              </div>
-            </div>
-          )}
-          <button
-            className={
-              location.pathname === "/" || location.pathname === `/${userName}`
-                ? "btn"
-                : "btn default "
-            }
-            onClick={handleClick}
-          >
-            <span>{user ? "Sign Out" : "Sign In"}</span>
-          </button>
-        </div>
-      </div>
-    </Container>
+          </div>
+        </Container>
+      )}
+    </>
   );
 };
 
@@ -94,8 +140,9 @@ const Container = styled.div`
     .controls {
       gap: 1.5rem;
 
-      .user-info,
-      .liked {
+      .top-movies,
+      .liked,
+      .user-info {
         gap: 0.25rem;
         color: rgba(255, 255, 255, 0.5);
         cursor: pointer;
@@ -106,12 +153,16 @@ const Container = styled.div`
         }
       }
 
-      .user-info:hover,
+      .user-info {
+        cursor: default;
+      }
+
+      .top-movies:hover,
       .liked:hover {
         color: rgba(255, 255, 255, 1);
       }
 
-      .user-info.lightning,
+      .top-movies.lightning,
       .liked.lightning {
         color: rgba(255, 255, 255, 1);
         cursor: default;
@@ -148,13 +199,19 @@ const Container = styled.div`
       .controls {
         gap: 0.75rem;
 
-        .user-info {
-          .user-name {
+        .top-movies {
+          .text {
             display: none;
           }
         }
 
         .liked {
+          .text {
+            display: none;
+          }
+        }
+
+        .user-info {
           .text {
             display: none;
           }

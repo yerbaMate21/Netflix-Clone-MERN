@@ -19,7 +19,6 @@ import Footer from "../components/home/Footer";
 const Home = () => {
   const { user } = useAuthContext();
   const { userDetails, dispatch } = useUserDetailsContext();
-
   const [isLoading, setIsLoading] = useState(null);
 
   useEffect(() => {

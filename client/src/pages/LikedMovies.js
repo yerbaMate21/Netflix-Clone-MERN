@@ -1,15 +1,15 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useAuthContext } from "../hooks/useAuthContext";
 import { useLikedMoviesContext } from "../hooks/useLikedMoviesContext";
-import LoadingPage from "./LoadingPage";
 import Navbar from "../components/Navbar";
 import MovieItem from "../components/netflix/MovieItem";
 import Divider from "../components/home/Divider";
 import Footer from "../components/home/Footer";
 
-const UserPage = ({ user }) => {
+const LikedMovies = () => {
+  const { user } = useAuthContext();
   const { likedMovies, dispatch } = useLikedMoviesContext();
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -18,17 +18,13 @@ const UserPage = ({ user }) => {
   }, [user]);
 
   const fetchLikedMovies = async () => {
-    setIsLoading(true);
-
     const response = await fetch(`/api/user/liked/${user.email}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: { Authorization: `Bearer ${user.token}` },
     });
     const json = await response.json();
 
     if (response.ok) {
       dispatch({ type: "SET_LIKEDMOVIES", payload: json });
-      setIsLoading(false);
     }
   };
 
@@ -39,29 +35,25 @@ const UserPage = ({ user }) => {
   return (
     <Container>
       <Navbar />
-      {isLoading ? (
-        <LoadingPage />
-      ) : (
-        <div className="content">
-          <h3>Liked Movies</h3>
-          {likedMovies && likedMovies.length > 0 && (
-            <div className="grid-container">
-              {likedMovies.map((movie) => (
-                <div className="movie-item-container" key={movie.id}>
-                  <MovieItem movie={movie} handleMovie={handleMovie} />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+      <div className="content">
+        <h3>Liked Movies</h3>
+        {likedMovies && likedMovies.length > 0 && (
+          <div className="grid-container">
+            {likedMovies.map((movie) => (
+              <div className="movie-item-container" key={movie.id}>
+                <MovieItem movie={movie} handleMovie={handleMovie} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
       <Divider />
       <Footer />
     </Container>
   );
 };
 
-export default UserPage;
+export default LikedMovies;
 
 const Container = styled.div`
   background-image: linear-gradient(

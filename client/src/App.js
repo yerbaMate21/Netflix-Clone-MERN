@@ -3,7 +3,7 @@ import { useAuthContext } from "./hooks/useAuthContext";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import UserPage from "./pages/UserPage";
+import LikedMovies from "./pages/LikedMovies";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
 import Registration from "./components/signup/Registration";
@@ -55,7 +55,7 @@ const App = () => {
             element={<Signup children={<UserDetailsForm />} />}
           />
         </>
-        <Route path={`/${userName}`} element={<UserPage user={user} />} />
+        <Route path={`/${userName}/liked`} element={<LikedMovies />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useLikedMoviesContext } from "../hooks/useLikedMoviesContext";
 import Navbar from "../components/Navbar";
 import Slider from "../components/netflix/Slider";
 import Movie from "../components/netflix/Movie";
@@ -8,6 +10,9 @@ import Footer from "../components/home/Footer";
 import { API_KEY, BASE_URL } from "../utils/constants";
 
 const Netflix = () => {
+  const { user } = useAuthContext();
+  const { dispatch } = useLikedMoviesContext();
+
   const [genres, setGenres] = useState([]);
   const [movies, setMovies] = useState([]);
   const [urls, setUrls] = useState([]);
@@ -19,6 +24,7 @@ const Netflix = () => {
 
   useEffect(() => {
     fetchGenres();
+    fetchLikedMovies();
   }, []);
 
   useEffect(() => {
@@ -154,6 +160,17 @@ const Netflix = () => {
       setMovies(data);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const fetchLikedMovies = async () => {
+    const response = await fetch(`/api/user/liked/${user.email}`, {
+      headers: { Authorization: `Bearer ${user.token}` },
+    });
+    const json = await response.json();
+
+    if (response.ok) {
+      dispatch({ type: "SET_LIKEDMOVIES", payload: json });
     }
   };
 

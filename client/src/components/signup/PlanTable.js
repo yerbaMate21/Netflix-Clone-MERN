@@ -5,6 +5,10 @@ import { AiOutlineCheck } from "react-icons/ai";
 const PlanTable = ({ plan, isScrolled }) => {
   const [activeClass, setActiveClass] = useState(null);
 
+  useEffect(() => {
+    toggleClass();
+  }, [plan]);
+
   const toggleClass = () => {
     if (plan === "Basic") {
       setActiveClass("active-one");
@@ -16,10 +20,6 @@ const PlanTable = ({ plan, isScrolled }) => {
       setActiveClass(null);
     }
   };
-
-  useEffect(() => {
-    toggleClass();
-  }, [plan]);
 
   return (
     <Container>

@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useEffect } from "react";
 
 export const LikedMoviesContext = createContext();
 
@@ -25,6 +25,14 @@ export const LikedMoviesContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(likedMoviesReducer, {
     likedMovies: null,
   });
+
+  useEffect(() => {
+    const likedMovies = JSON.parse(localStorage.getItem("likedMovies"));
+
+    if (likedMovies) {
+      dispatch({ type: "SET_LIKEDMOVIES", payload: likedMovies });
+    }
+  }, []);
 
   return (
     <LikedMoviesContext.Provider value={{ ...state, dispatch }}>

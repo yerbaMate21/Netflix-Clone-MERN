@@ -92,8 +92,12 @@ const UserDetailsForm = () => {
         name: json.cardNameError,
       });
     }
+
     if (response.ok) {
       setIsLoading(false);
+
+      localStorage.setItem("userDetails", JSON.stringify(json));
+
       dispatch({ type: "CREATE_USERDETAILS", payload: json });
       setError({
         ...error,

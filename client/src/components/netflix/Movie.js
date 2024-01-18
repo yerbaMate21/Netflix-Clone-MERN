@@ -13,8 +13,6 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
   const { user } = useAuthContext();
   const { likedMovies, dispatch } = useLikedMoviesContext();
 
-  console.log("liked movies movie ", likedMovies);
-
   const [videoKey, setVideoKey] = useState(null);
   const [isAlertShown, setIsAlertShown] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,15 +41,21 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
     const email = user.email;
     const data = movie;
 
-    const response = await fetch("/api/user/add", {
+    const response = await fetch(`/api/user/add`, {
       method: "POST",
       body: JSON.stringify({ email, data }),
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
     });
     const json = await response.json();
 
     if (response.ok) {
+      localStorage.setItem("likedMovies", JSON.stringify(json));
+
       dispatch({ type: "ADD_LIKEDMOVIES", payload: json });
+
       setIsLoading(false);
       setIsAlertShown(true);
       setTimeout(() => setIsAlertShown(false), 2500);
