@@ -1,6 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
 import { useAuthContext } from "./hooks/useAuthContext";
+import { useUserDetailsContext } from "./hooks/useUserDetailsContext";
+import LoadingPage from "./pages/LoadingPage";
 import Home from "./pages/Home";
+import Netflix from "./pages/Netflix";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import LikedMovies from "./pages/LikedMovies";
@@ -13,7 +17,8 @@ import PlanOption from "./components/signup/PlanOption";
 import UserDetailsForm from "./components/signup/UserDetailsForm";
 
 const App = () => {
-  const { user } = useAuthContext();
+  const { user, isLoading } = useAuthContext();
+  const { userDetails, dispatch } = useUserDetailsContext();
 
   let userName = "";
 
@@ -22,41 +27,62 @@ const App = () => {
     userName = email.substring(0, email.lastIndexOf("@"));
   }
 
+  useEffect(() => {
+    if (user) {
+      fetchUserDetails();
+    }
+  }, [user]);
+
+  const fetchUserDetails = async () => {
+    const response = await fetch("/api/userDetails", {
+      headers: { Authorization: `Bearer ${user.token}` },
+    });
+    const json = await response.json();
+
+    if (response.ok) {
+      dispatch({ type: "SET_USERDETAILS", payload: json });
+    }
+  };
+
   return (
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <>
+        <Route
+          index
+          path="/"
+          element={
+            <>
+              <>{isLoading && user && <LoadingPage />}</>
+              <>
+                {userDetails && userDetails.length > 0 ? <Netflix /> : <Home />}
+              </>
+            </>
+          }
+        />
+        <Route path="login" element={<Login />} />
+        <Route path="signup">
           <Route
-            path="/signup/registration"
+            path="registration"
             element={<Signup children={<Registration />} />}
           />
           <Route
-            path="/signup/regform"
+            path="regform"
             element={<Signup children={<RegistrationForm />} />}
           />
+          <Route index element={<Signup children={<Plan />} />} />
+          <Route path="plan" element={<Signup children={<PlanOption />} />} />
           <Route
-            exact
-            path="/signup"
-            element={<Signup children={<Plan />} />}
-          />
-          <Route
-            path="/signup/plan"
+            path="editplan"
             element={<Signup children={<PlanOption />} />}
           />
           <Route
-            path="/signup/editplan"
-            element={<Signup children={<PlanOption />} />}
-          />
-          <Route
-            path="/signup/creditOption"
+            path="creditOption"
             element={<Signup children={<UserDetailsForm />} />}
           />
-        </>
-        <Route path={`/${userName}/liked`} element={<LikedMovies />} />
-        <Route path="/*" element={<NotFound />} />
+        </Route>
+        <Route path={`${userName}/liked`} element={<LikedMovies />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

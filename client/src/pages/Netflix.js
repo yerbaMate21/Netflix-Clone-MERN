@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLikedMoviesContext } from "../hooks/useLikedMoviesContext";
+import LoadingPage from "./LoadingPage";
 import Navbar from "../components/Navbar";
 import Slider from "../components/netflix/Slider";
 import Movie from "../components/netflix/Movie";
@@ -12,13 +13,13 @@ import { API_KEY, BASE_URL } from "../utils/constants";
 const Netflix = () => {
   const { user } = useAuthContext();
   const { dispatch } = useLikedMoviesContext();
-
   const [genres, setGenres] = useState([]);
   const [movies, setMovies] = useState([]);
   const [urls, setUrls] = useState([]);
   const [data, setData] = useState([]);
   const [openMovie, setOpenMovie] = useState(null);
   const [videoIsOpen, setVideoIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   let sliderCount = 3;
 
@@ -154,10 +155,12 @@ const Netflix = () => {
 
   const fetchMovies = async () => {
     try {
+      setIsLoading(true);
       const data = await Promise.all(
         urls.map((url) => fetch(url).then((res) => res.json()))
       );
       setMovies(data);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -185,32 +188,35 @@ const Netflix = () => {
   };
 
   return (
-    <Container>
-      <Navbar />
-      <header>
-        {openMovie && (
-          <Movie
-            movie={openMovie}
-            videoIsOpen={videoIsOpen}
-            setVideoIsOpen={setVideoIsOpen}
-          />
-        )}
-      </header>
-      <section>
-        {data.map((d, index) => (
-          <Slider
-            movies={d[1]}
-            genre={d[0]}
-            key={index}
-            handleMovie={handleMovie}
-          />
-        ))}
-      </section>
-      <Dividier />
-      <footer>
-        <Footer />
-      </footer>
-    </Container>
+    <>
+      {isLoading && <LoadingPage />}
+      <Container>
+        <Navbar />
+        <header>
+          {openMovie && (
+            <Movie
+              movie={openMovie}
+              videoIsOpen={videoIsOpen}
+              setVideoIsOpen={setVideoIsOpen}
+            />
+          )}
+        </header>
+        <section>
+          {data.map((d, index) => (
+            <Slider
+              movies={d[1]}
+              genre={d[0]}
+              key={index}
+              handleMovie={handleMovie}
+            />
+          ))}
+        </section>
+        <Dividier />
+        <footer>
+          <Footer />
+        </footer>
+      </Container>
+    </>
   );
 };
 

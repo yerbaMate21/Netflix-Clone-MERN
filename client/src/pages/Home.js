@@ -1,9 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { useUserDetailsContext } from "../hooks/useUserDetailsContext";
-import LoadingPage from "./LoadingPage";
-import Netflix from "./Netflix";
 import Background from "../components/Background";
 import bgHome from "../assets/img/background_home.jpg";
 import bgBreakingBad from "../assets/img/breakingBad.jpg";
@@ -18,68 +14,34 @@ import Footer from "../components/home/Footer";
 
 const Home = () => {
   const { user } = useAuthContext();
-  const { userDetails, dispatch } = useUserDetailsContext();
-  const [isLoading, setIsLoading] = useState(null);
-
-  useEffect(() => {
-    if (user) {
-      fetchUserDetails();
-    }
-  }, [user]);
-
-  const fetchUserDetails = async () => {
-    setIsLoading(true);
-
-    const response = await fetch("/api/userDetails", {
-      headers: { Authorization: `Bearer ${user.token}` },
-    });
-    const json = await response.json();
-
-    if (response.ok) {
-      dispatch({ type: "SET_USERDETAILS", payload: json });
-      setIsLoading(false);
-    }
-  };
 
   return (
-    <>
-      {isLoading ? (
-        <LoadingPage />
-      ) : (
-        <>
-          {userDetails && userDetails.length > 0 ? (
-            <Netflix />
-          ) : (
-            <HomeContainer>
-              <div className="top-section">
-                <Background image={user ? bgBreakingBad : bgHome} />
-                <Navbar />
-                <div className="content">
-                  <Hero />
-                </div>
-              </div>
-              <div className="bottom-section">
-                <StoryCardsContainer />
-                <FaqSection />
-                <div className="submit-container">
-                  {user ? <FinishRegisterButton /> : <CreateEmail />}
-                </div>
-              </div>
-              <footer>
-                <Divider />
-                <Footer />
-              </footer>
-            </HomeContainer>
-          )}
-        </>
-      )}
-    </>
+    <Container>
+      <div className="top-section">
+        <Background image={user ? bgBreakingBad : bgHome} />
+        <Navbar />
+        <div className="content">
+          <Hero />
+        </div>
+      </div>
+      <div className="bottom-section">
+        <StoryCardsContainer />
+        <FaqSection />
+        <div className="submit-container">
+          {user ? <FinishRegisterButton /> : <CreateEmail />}
+        </div>
+      </div>
+      <footer>
+        <Divider />
+        <Footer />
+      </footer>
+    </Container>
   );
 };
 
 export default Home;
 
-const HomeContainer = styled.div`
+const Container = styled.div`
   .top-section {
     position: relative;
     width: 100%;

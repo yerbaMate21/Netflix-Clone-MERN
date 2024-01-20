@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import styled from "styled-components";
 import CreateEmail from "./signup/CreateEmail";
 import FinishRegisterButton from "./FinishRegisterButton";
 import { useAuthContext } from "../hooks/useAuthContext";

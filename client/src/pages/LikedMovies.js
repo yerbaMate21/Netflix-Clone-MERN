@@ -42,6 +42,7 @@ const LikedMovies = () => {
             {likedMovies.map((movie) => (
               <div className="movie-item-container" key={movie.id}>
                 <MovieItem movie={movie} handleMovie={handleMovie} />
+                <div className="controls">controls</div>
               </div>
             ))}
           </div>
@@ -82,7 +83,7 @@ const Container = styled.div`
     .grid-container {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 0.5rem;
+      gap: 0.75rem;
 
       @media screen and (max-width: 960px) {
         grid-template-columns: repeat(3, 1fr);
@@ -98,10 +99,19 @@ const Container = styled.div`
 
       .movie-item-container {
         cursor: pointer;
-        transition: all 0.3s ease;
+        position: relative;
+
+        .controls {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          border: 1px solid yellow;
+        }
       }
 
       .movie-item-container:hover {
+        transition: all 0.3s ease;
         transform: scale(1.05);
       }
     }

@@ -17,16 +17,12 @@ import Checkbox from "./Checkbox";
 
 const UserDetailsForm = () => {
   const navigate = useNavigate();
-
   const [activeCard, setActiveCard] = useState();
   const [isConset, setIsConset] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-
   const { state, setState, onChange, onBlur, onSubmit } = useRegistrationForm();
-
   const { dispatch } = useUserDetailsContext();
   const { user } = useAuthContext();
-
   const [isLoading, setIsLoading] = useState(null);
   const [error, setError] = useState({
     cardNumber: null,
@@ -96,7 +92,7 @@ const UserDetailsForm = () => {
     if (response.ok) {
       setIsLoading(false);
 
-      localStorage.setItem("userDetails", JSON.stringify(json));
+      localStorage.setItem("userDetails", JSON.stringify(userDetails));
 
       dispatch({ type: "CREATE_USERDETAILS", payload: json });
       setError({

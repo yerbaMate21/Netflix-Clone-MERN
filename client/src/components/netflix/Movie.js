@@ -12,7 +12,6 @@ import LoadingPage from "../../pages/LoadingPage";
 const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
   const { user } = useAuthContext();
   const { likedMovies, dispatch } = useLikedMoviesContext();
-
   const [videoKey, setVideoKey] = useState(null);
   const [isAlertShown, setIsAlertShown] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +51,8 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
     const json = await response.json();
 
     if (response.ok) {
-      localStorage.setItem("likedMovies", JSON.stringify(json));
+      localStorage.setItem("likedMovies", JSON.stringify(likedMovies));
+      console.log("liked mobies movie storage", likedMovies);
 
       dispatch({ type: "ADD_LIKEDMOVIES", payload: json });
 
