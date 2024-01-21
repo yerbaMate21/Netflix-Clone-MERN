@@ -13,7 +13,7 @@ router.post("/login", loginUser);
 router.post("/signup", signupUser);
 //
 router.get("/liked/:email", getLikedMovies);
-router.post("/add", addToLikedMovies);
-router.put("/remove", removeFromLikedMovies);
+router.post("/liked", addToLikedMovies);
+router.put("/liked/:id", removeFromLikedMovies);
 
 module.exports = router;

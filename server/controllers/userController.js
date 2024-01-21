@@ -39,6 +39,7 @@ const addToLikedMovies = async (req, res) => {
 const removeFromLikedMovies = async (req, res) => {
   try {
     const { email, movieId } = req.body;
+
     const user = await User.findOne({ email });
     if (user) {
       const movies = user.likedMovies;

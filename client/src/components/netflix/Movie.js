@@ -40,7 +40,7 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
     const email = user.email;
     const data = movie;
 
-    const response = await fetch(`/api/user/add`, {
+    const response = await fetch(`/api/user/liked`, {
       method: "POST",
       body: JSON.stringify({ email, data }),
       headers: {
@@ -52,7 +52,6 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
 
     if (response.ok) {
       localStorage.setItem("likedMovies", JSON.stringify(likedMovies));
-      console.log("liked mobies movie storage", likedMovies);
 
       dispatch({ type: "ADD_LIKEDMOVIES", payload: json });
 

@@ -9,7 +9,7 @@ import Footer from "../components/home/Footer";
 
 const LikedMovies = () => {
   const { user } = useAuthContext();
-  const { likedMovies, dispatch } = useLikedMoviesContext();
+  const { likedMovies, dispatch, isLoading } = useLikedMoviesContext();
 
   useEffect(() => {
     if (user) {
@@ -18,18 +18,42 @@ const LikedMovies = () => {
   }, [user]);
 
   const fetchLikedMovies = async () => {
-    const response = await fetch(`/api/user/liked/${user.email}`, {
-      headers: { Authorization: `Bearer ${user.token}` },
-    });
-    const json = await response.json();
+    try {
+      const response = await fetch(`/api/user/liked/${user.email}`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      const json = await response.json();
 
-    if (response.ok) {
-      dispatch({ type: "SET_LIKEDMOVIES", payload: json });
+      if (response.ok) {
+        dispatch({ type: "SET_LIKEDMOVIES", payload: json });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  const handleMovie = () => {
-    console.log("play video or remove from liked movies");
+  const removeMovie = async (id) => {
+    const email = user.email;
+
+    try {
+      const response = await fetch(`/api/user/liked/${id}`, {
+        method: "PUT",
+        body: JSON.stringify({ email }),
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      const json = await response.json();
+
+      if (response.ok) {
+        dispatch({ type: "REMOVE_LIKEDMOVIES", payload: json });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleMovie = (movie) => {
+    const id = movie.id;
+    removeMovie(id);
   };
 
   return (
