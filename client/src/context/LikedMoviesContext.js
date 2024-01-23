@@ -7,17 +7,14 @@ export const likedMoviesReducer = (state, action) => {
     case "SET_LIKEDMOVIES":
       return {
         likedMovies: action.payload,
-        isLoading: false,
       };
     case "ADD_LIKEDMOVIES":
       return {
         likedMovies: [action.payload, { ...state.likedMovies }],
-        isLoading: false,
       };
     case "REMOVE_LIKEDMOVIES":
       return {
         likedMovies: [action.payload, { ...state.likedMovies }],
-        isLoading: false,
       };
     default:
       return state;
@@ -27,7 +24,6 @@ export const likedMoviesReducer = (state, action) => {
 export const LikedMoviesContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(likedMoviesReducer, {
     likedMovies: null,
-    isLoading: true,
   });
 
   useEffect(() => {
