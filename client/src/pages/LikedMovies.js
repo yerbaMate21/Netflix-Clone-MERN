@@ -20,6 +20,7 @@ const LikedMovies = () => {
   const fetchLikedMovies = async () => {
     try {
       const response = await fetch(`/api/user/liked/${user.email}`, {
+        "Content-Type": "application/json",
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const json = await response.json();
@@ -34,12 +35,16 @@ const LikedMovies = () => {
 
   const removeMovie = async (id) => {
     const email = user.email;
+    const movieId = id;
 
     try {
-      const response = await fetch(`/api/user/liked/${id}`, {
+      const response = await fetch("/api/user/remove", {
         method: "PUT",
-        body: JSON.stringify({ email }),
-        headers: { Authorization: `Bearer ${user.token}` },
+        body: JSON.stringify({ email, movieId }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
       });
       const json = await response.json();
 
@@ -54,6 +59,8 @@ const LikedMovies = () => {
   const handleMovie = (movie) => {
     const id = movie.id;
     removeMovie(id);
+
+    console.log("remove", id);
   };
 
   return (
@@ -63,8 +70,8 @@ const LikedMovies = () => {
         <h3>Liked Movies</h3>
         {likedMovies && likedMovies.length > 0 && (
           <div className="grid-container">
-            {likedMovies.map((movie) => (
-              <div className="movie-item-container" key={movie.id}>
+            {likedMovies.map((movie, index) => (
+              <div className="movie-item-container" key={index}>
                 <MovieItem movie={movie} handleMovie={handleMovie} />
                 <div className="controls">controls</div>
               </div>

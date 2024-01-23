@@ -16,7 +16,7 @@ export const likedMoviesReducer = (state, action) => {
       };
     case "REMOVE_LIKEDMOVIES":
       return {
-        likedMovies: [action.payload, state.likedMovies],
+        likedMovies: [action.payload, { ...state.likedMovies }],
         isLoading: false,
       };
     default:

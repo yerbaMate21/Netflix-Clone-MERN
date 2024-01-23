@@ -168,6 +168,7 @@ const Netflix = () => {
 
   const fetchLikedMovies = async () => {
     const response = await fetch(`/api/user/liked/${user.email}`, {
+      "Content-Type": "application/json",
       headers: { Authorization: `Bearer ${user.token}` },
     });
     const json = await response.json();

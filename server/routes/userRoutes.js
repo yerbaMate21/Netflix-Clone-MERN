@@ -14,6 +14,6 @@ router.post("/signup", signupUser);
 //
 router.get("/liked/:email", getLikedMovies);
 router.post("/liked", addToLikedMovies);
-router.put("/liked/:id", removeFromLikedMovies);
+router.put("/remove", removeFromLikedMovies);
 
 module.exports = router;
