@@ -1,21 +1,31 @@
 import styled from "styled-components";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLikedMoviesContext } from "../hooks/useLikedMoviesContext";
 import Navbar from "../components/Navbar";
 import MovieItem from "../components/netflix/MovieItem";
 import Divider from "../components/home/Divider";
 import Footer from "../components/home/Footer";
+import LoadingPage from "./LoadingPage";
 
 const LikedMovies = () => {
+  const navigate = useNavigate();
   const { user } = useAuthContext();
-  const { likedMovies, dispatch, isLoading } = useLikedMoviesContext();
+  const { likedMovies, dispatch } = useLikedMoviesContext();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
       fetchLikedMovies();
     }
   }, [user]);
+
+  useEffect(() => {
+    if (likedMovies && likedMovies.length < 1) {
+      navigate("/");
+    }
+  }, [likedMovies]);
 
   const fetchLikedMovies = async () => {
     try {
@@ -34,6 +44,8 @@ const LikedMovies = () => {
   };
 
   const removeMovie = async (id) => {
+    setIsLoading(true);
+
     const email = user.email;
     const movieId = id;
 
@@ -50,6 +62,8 @@ const LikedMovies = () => {
 
       if (response.ok) {
         dispatch({ type: "REMOVE_LIKEDMOVIES", payload: json });
+        setIsLoading(false);
+        fetchLikedMovies();
       }
     } catch (error) {
       console.log(error);
@@ -59,29 +73,30 @@ const LikedMovies = () => {
   const handleMovie = (movie) => {
     const id = movie.id;
     removeMovie(id);
-
-    console.log("remove", id);
   };
 
   return (
-    <Container>
-      <Navbar />
-      <div className="content">
-        <h3>Liked Movies</h3>
-        {likedMovies && likedMovies.length > 0 && (
-          <div className="grid-container">
-            {likedMovies.map((movie, index) => (
-              <div className="movie-item-container" key={index}>
-                <MovieItem movie={movie} handleMovie={handleMovie} />
-                <div className="controls">controls</div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-      <Divider />
-      <Footer />
-    </Container>
+    <>
+      {isLoading && <LoadingPage />}
+      <Container>
+        <Navbar />
+        <div className="content">
+          <h3>Liked Movies</h3>
+          {likedMovies && likedMovies.length > 0 && (
+            <div className="grid-container">
+              {likedMovies.map((movie, index) => (
+                <div className="movie-item-container" key={index}>
+                  <MovieItem movie={movie} handleMovie={handleMovie} />
+                  <div className="controls">controls</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        <Divider />
+        <Footer />
+      </Container>
+    </>
   );
 };
 
