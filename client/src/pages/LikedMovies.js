@@ -5,15 +5,20 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useLikedMoviesContext } from "../hooks/useLikedMoviesContext";
 import Navbar from "../components/Navbar";
 import MovieItem from "../components/netflix/MovieItem";
+import VideoContainer from "../components/netflix/VideoContainer";
 import Divider from "../components/home/Divider";
 import Footer from "../components/home/Footer";
 import LoadingPage from "./LoadingPage";
+import { FaPlay, FaTrashAlt } from "react-icons/fa";
 
 const LikedMovies = () => {
   const navigate = useNavigate();
   const { user } = useAuthContext();
   const { likedMovies, dispatch } = useLikedMoviesContext();
+  const [videoKey, setVideoKey] = useState();
+  const [videoIsOpen, setVideoIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isHover, setIsHover] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -28,6 +33,8 @@ const LikedMovies = () => {
   }, [likedMovies]);
 
   const fetchLikedMovies = async () => {
+    setIsLoading(true);
+
     try {
       const response = await fetch(`/api/user/liked/${user.email}`, {
         "Content-Type": "application/json",
@@ -37,6 +44,7 @@ const LikedMovies = () => {
 
       if (response.ok) {
         dispatch({ type: "SET_LIKEDMOVIES", payload: json });
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -70,9 +78,12 @@ const LikedMovies = () => {
     }
   };
 
-  const handleMovie = (movie) => {
-    const id = movie.id;
-    removeMovie(id);
+  const handlePlay = (movie) => {
+    console.log("Play video ==>", movie.title);
+  };
+
+  const handleRemove = (movie) => {
+    removeMovie(movie.id);
   };
 
   return (
@@ -85,9 +96,32 @@ const LikedMovies = () => {
           {likedMovies && likedMovies.length > 0 && (
             <div className="grid-container">
               {likedMovies.map((movie, index) => (
-                <div className="movie-item-container" key={index}>
-                  <MovieItem movie={movie} handleMovie={handleMovie} />
-                  <div className="controls">controls</div>
+                <div
+                  className="movie-item-container"
+                  key={index}
+                  onMouseEnter={() => setIsHover(true)}
+                  onMouseLeave={() => setIsHover(false)}
+                >
+                  <MovieItem movie={movie} handleMovie={() => null} />
+                  <div className="controls flex">
+                    <button
+                      className="btn play"
+                      onClick={() => handlePlay(movie)}
+                    >
+                      <i>
+                        <FaPlay />
+                      </i>
+                    </button>
+                    <button
+                      className="btn del"
+                      onClick={() => handleRemove(movie)}
+                    >
+                      <i>
+                        <FaTrashAlt />
+                      </i>
+                    </button>
+                  </div>
+                  <div className={`bg ${isHover && "visible"}`}></div>
                 </div>
               ))}
             </div>
@@ -144,21 +178,70 @@ const Container = styled.div`
       }
 
       .movie-item-container {
-        cursor: pointer;
         position: relative;
 
         .controls {
           position: absolute;
-          top: 50%;
+          top: 65%;
           left: 50%;
           transform: translate(-50%, -50%);
-          border: 1px solid yellow;
+          z-index: 2;
+          gap: 0.5rem;
+          opacity: 0;
+          pointer-events: none;
+          transition: all 0.3s ease;
+          justify-content: center;
+
+          .play,
+          .del {
+            background-color: rgba(255, 255, 255, 1);
+            color: black;
+            box-shadow: 0 0 15px 2px black;
+            font-size: 2vw;
+
+            @media screen and (max-width: 600px) {
+              font-size: 4vw;
+            }
+
+            @media screen and (max-width: 400px) {
+              font-size: 6vw;
+            }
+          }
+
+          .play:hover,
+          .del:hover {
+            background-color: rgba(125, 125, 125, 1);
+          }
+        }
+
+        .bg {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0);
+          z-index: 1;
+          transition: all 0.3s ease;
+        }
+
+        .bg.visible {
+          background-color: rgba(0, 0, 0, 0.75);
         }
       }
 
       .movie-item-container:hover {
         transition: all 0.3s ease;
         transform: scale(1.05);
+
+        .controls {
+          opacity: 1;
+          pointer-events: auto;
+        }
+
+        .bg {
+          background-color: rgba(0, 0, 0, 0);
+        }
       }
     }
   }
