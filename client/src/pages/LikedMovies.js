@@ -6,6 +6,7 @@ import { useLikedMoviesContext } from "../hooks/useLikedMoviesContext";
 import Navbar from "../components/Navbar";
 import MovieItem from "../components/netflix/MovieItem";
 import VideoContainer from "../components/netflix/VideoContainer";
+import YoutubePlayer from "../components/YoutubePlayer";
 import Divider from "../components/home/Divider";
 import Footer from "../components/home/Footer";
 import LoadingPage from "./LoadingPage";
@@ -78,8 +79,11 @@ const LikedMovies = () => {
     }
   };
 
+  // fetch video key
+
   const handlePlay = (movie) => {
     console.log("Play video ==>", movie.title);
+    setVideoIsOpen(true);
   };
 
   const handleRemove = (movie) => {
@@ -89,47 +93,56 @@ const LikedMovies = () => {
   return (
     <>
       {isLoading && <LoadingPage />}
-      <Container>
-        <Navbar />
-        <div className="content">
-          <h3>Liked Movies</h3>
-          {likedMovies && likedMovies.length > 0 && (
-            <div className="grid-container">
-              {likedMovies.map((movie, index) => (
-                <div
-                  className="movie-item-container"
-                  key={index}
-                  onMouseEnter={() => setIsHover(true)}
-                  onMouseLeave={() => setIsHover(false)}
-                >
-                  <MovieItem movie={movie} handleMovie={() => null} />
-                  <div className="controls flex">
-                    <button
-                      className="btn play"
-                      onClick={() => handlePlay(movie)}
-                    >
-                      <i>
-                        <FaPlay />
-                      </i>
-                    </button>
-                    <button
-                      className="btn del"
-                      onClick={() => handleRemove(movie)}
-                    >
-                      <i>
-                        <FaTrashAlt />
-                      </i>
-                    </button>
+      {videoIsOpen ? (
+        <VideoContainer
+          width="100vw"
+          height="100vh"
+          videoKey={videoKey}
+          setVideoIsOpen={setVideoIsOpen}
+        />
+      ) : (
+        <Container>
+          <Navbar />
+          <div className="content">
+            <h3>Liked Movies</h3>
+            {likedMovies && likedMovies.length > 0 && (
+              <div className="grid-container">
+                {likedMovies.map((movie, index) => (
+                  <div
+                    className="movie-item-container"
+                    key={index}
+                    onMouseEnter={() => setIsHover(true)}
+                    onMouseLeave={() => setIsHover(false)}
+                  >
+                    <MovieItem movie={movie} handleMovie={() => null} />
+                    <div className="controls flex">
+                      <button
+                        className="btn play"
+                        onClick={() => handlePlay(movie)}
+                      >
+                        <i>
+                          <FaPlay />
+                        </i>
+                      </button>
+                      <button
+                        className="btn del"
+                        onClick={() => handleRemove(movie)}
+                      >
+                        <i>
+                          <FaTrashAlt />
+                        </i>
+                      </button>
+                    </div>
+                    <div className={`bg ${isHover && "visible"}`}></div>
                   </div>
-                  <div className={`bg ${isHover && "visible"}`}></div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-        <Divider />
-        <Footer />
-      </Container>
+                ))}
+              </div>
+            )}
+          </div>
+          <Divider />
+          <Footer />
+        </Container>
+      )}
     </>
   );
 };
@@ -226,7 +239,7 @@ const Container = styled.div`
         }
 
         .bg.visible {
-          background-color: rgba(0, 0, 0, 0.75);
+          background-color: rgba(0, 0, 0, 0.5);
         }
       }
 
