@@ -121,7 +121,7 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
             )}
             {videoIsOpen && (
               <VideoContainer
-                movie={movie}
+                width="700px"
                 videoKey={videoKey}
                 setVideoIsOpen={setVideoIsOpen}
               />

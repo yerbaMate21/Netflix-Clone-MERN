@@ -2,10 +2,13 @@ import styled from "styled-components";
 import YoutubePlayer from "../YoutubePlayer";
 import { FaWindowClose } from "react-icons/fa";
 
-const VideoContainer = ({ videoKey, setVideoIsOpen }) => {
+const VideoContainer = ({ width, height, videoKey, setVideoIsOpen }) => {
   return (
     <Container>
-      <div className="video-container">
+      <div
+        className="video-container"
+        style={{ maxWidth: width, height: height }}
+      >
         <div className="box">
           <div className="close-btn" onClick={() => setVideoIsOpen(false)}>
             <i>
@@ -27,9 +30,9 @@ const Container = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 90%;
+    width: 100%;
     min-width: 320px;
-    max-width: 700px;
+    z-index: 10;
 
     .box {
       position: relative;
