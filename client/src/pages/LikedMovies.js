@@ -6,7 +6,6 @@ import { useLikedMoviesContext } from "../hooks/useLikedMoviesContext";
 import Navbar from "../components/Navbar";
 import MovieItem from "../components/netflix/MovieItem";
 import VideoContainer from "../components/netflix/VideoContainer";
-import YoutubePlayer from "../components/YoutubePlayer";
 import Divider from "../components/home/Divider";
 import Footer from "../components/home/Footer";
 import LoadingPage from "./LoadingPage";
@@ -68,6 +67,7 @@ const LikedMovies = () => {
         },
       });
       const json = await response.json();
+      console.log(json);
 
       if (response.ok) {
         dispatch({ type: "REMOVE_LIKEDMOVIES", payload: json });
@@ -79,15 +79,14 @@ const LikedMovies = () => {
     }
   };
 
-  // fetch video key
-
-  const handlePlay = (movie) => {
-    console.log("Play video ==>", movie.title);
+  const handlePlay = (key) => {
+    setVideoKey(key);
     setVideoIsOpen(true);
   };
 
   const handleRemove = (movie) => {
-    removeMovie(movie.id);
+    const id = movie.id;
+    removeMovie(id);
   };
 
   return (
@@ -107,18 +106,18 @@ const LikedMovies = () => {
             <h3>Liked Movies</h3>
             {likedMovies && likedMovies.length > 0 && (
               <div className="grid-container">
-                {likedMovies.map((movie, index) => (
+                {likedMovies.map((item, index) => (
                   <div
                     className="movie-item-container"
                     key={index}
                     onMouseEnter={() => setIsHover(true)}
                     onMouseLeave={() => setIsHover(false)}
                   >
-                    <MovieItem movie={movie} handleMovie={() => null} />
+                    <MovieItem movie={item.movie} handleMovie={() => null} />
                     <div className="controls flex">
                       <button
                         className="btn play"
-                        onClick={() => handlePlay(movie)}
+                        onClick={() => handlePlay(item.videoKey)}
                       >
                         <i>
                           <FaPlay />
@@ -126,7 +125,7 @@ const LikedMovies = () => {
                       </button>
                       <button
                         className="btn del"
-                        onClick={() => handleRemove(movie)}
+                        onClick={() => handleRemove(item.movie)}
                       >
                         <i>
                           <FaTrashAlt />

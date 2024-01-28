@@ -38,7 +38,7 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
     setIsLoading(true);
 
     const email = user.email;
-    const data = movie;
+    const data = { movie, videoKey };
 
     const response = await fetch(`/api/user/liked`, {
       method: "POST",

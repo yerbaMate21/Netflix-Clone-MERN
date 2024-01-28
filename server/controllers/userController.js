@@ -18,7 +18,10 @@ const addToLikedMovies = async (req, res) => {
     const user = await User.findOne({ email });
     if (user) {
       const { likedMovies } = user;
-      const movieAlreadyLiked = likedMovies.find(({ id }) => id === data.id);
+      const movieAlreadyLiked = likedMovies.find(
+        (m) => m.movie.id === data.movie.id
+      );
+
       if (!movieAlreadyLiked) {
         await User.findByIdAndUpdate(
           user._id,
@@ -41,12 +44,12 @@ const removeFromLikedMovies = async (req, res) => {
     const { email, movieId } = req.body;
     const user = await User.findOne({ email });
     if (user) {
-      const movies = user.likedMovies;
-      const newMovies = movies.filter((m) => m.id !== movieId);
+      const likedMovies = user.likedMovies;
+      const newLikedMovies = likedMovies.filter((m) => m.movie.id !== movieId);
       await User.findByIdAndUpdate(
         user._id,
         {
-          likedMovies: newMovies,
+          likedMovies: newLikedMovies,
         },
         { new: true }
       );

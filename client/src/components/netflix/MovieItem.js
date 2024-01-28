@@ -5,24 +5,28 @@ const MovieItem = ({ movie, handleMovie }) => {
   const [isHover, setIsHover] = useState(false);
 
   return (
-    <Container>
-      <div
-        className="movie-item"
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
-        onClick={() => handleMovie(movie)}
-      >
-        <img
-          src={`http://image.tmdb.org/t/p/w780${movie.poster_path}`}
-          alt={movie.title}
-        />
-        <div
-          className={`${
-            isHover && "detailed"
-          } movie-details flex j-center a-center`}
-        ></div>
-      </div>
-    </Container>
+    <>
+      {movie && (
+        <Container>
+          <div
+            className="movie-item"
+            onMouseEnter={() => setIsHover(true)}
+            onMouseLeave={() => setIsHover(false)}
+            onClick={() => handleMovie(movie)}
+          >
+            <img
+              src={`http://image.tmdb.org/t/p/w780${movie.poster_path}`}
+              alt={movie.title}
+            />
+            <div
+              className={`${
+                isHover && "detailed"
+              } movie-details flex j-center a-center`}
+            ></div>
+          </div>
+        </Container>
+      )}
+    </>
   );
 };
 
