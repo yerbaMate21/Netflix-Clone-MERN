@@ -105,7 +105,6 @@ export default Navbar;
 const Container = styled.div`
   .navbar-container {
     padding: 0 1.5rem;
-    height: 5.5rem;
     line-height: 0;
 
     .controls {
@@ -159,8 +158,6 @@ const Container = styled.div`
 
   @media only screen and (max-width: 740px) {
     .navbar-container {
-      height: 4.5rem;
-
       .controls {
         gap: 0.75rem;
 
@@ -169,6 +166,14 @@ const Container = styled.div`
         .user-info .text {
           display: none;
         }
+      }
+    }
+  }
+
+  @media only screen and (max-width: 400px) {
+    .navbar-container {
+      .controls {
+        gap: 0.25rem;
       }
     }
   }
