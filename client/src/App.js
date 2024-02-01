@@ -27,12 +27,6 @@ const App = () => {
     userName = email.substring(0, email.lastIndexOf("@"));
   }
 
-  useEffect(() => {
-    if (user) {
-      fetchUserDetails();
-    }
-  }, [user]);
-
   const fetchUserDetails = async () => {
     const response = await fetch("/api/userDetails", {
       headers: { Authorization: `Bearer ${user.token}` },
@@ -43,6 +37,12 @@ const App = () => {
       dispatch({ type: "SET_USERDETAILS", payload: json });
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      fetchUserDetails();
+    }
+  }, [user, dispatch]);
 
   return (
     <BrowserRouter>

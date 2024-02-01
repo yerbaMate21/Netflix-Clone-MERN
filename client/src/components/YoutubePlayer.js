@@ -4,6 +4,7 @@ const YoutubePlayer = ({ id }) => (
   <Container>
     <div className="video">
       <iframe
+        title="youtube-player"
         width="420"
         height="315"
         src={`https://www.youtube.com/embed/${id}?controls=0`}

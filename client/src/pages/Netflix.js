@@ -24,11 +24,6 @@ const Netflix = () => {
   let sliderCount = 3;
 
   useEffect(() => {
-    fetchGenres();
-    fetchLikedMovies();
-  }, []);
-
-  useEffect(() => {
     fetchMovies();
   }, [urls]);
 
@@ -61,7 +56,7 @@ const Netflix = () => {
     let duplicateObjectsArray = [];
 
     for (let i of duplicateMovies) {
-      const found = (element) => element == i;
+      const found = (element) => element === i;
       for (let j = 0; j < separateMoviesIds.length; j++) {
         const booleanValue = separateMoviesIds[j].some(found);
         if (booleanValue === true) {
@@ -89,7 +84,7 @@ const Netflix = () => {
         for (let j of objectsToRemove) {
           if (i === j.index) {
             for (let k of moviesArray[i]) {
-              if (j.id == k.id) {
+              if (j.id === k.id) {
                 const findIndex = moviesArray[i].findIndex(
                   (obj) => obj.id === k.id
                 );
@@ -177,6 +172,11 @@ const Netflix = () => {
       dispatch({ type: "SET_LIKEDMOVIES", payload: json });
     }
   };
+
+  useEffect(() => {
+    fetchGenres();
+    fetchLikedMovies();
+  }, []);
 
   const handleMovie = (movie) => {
     setOpenMovie(movie);
