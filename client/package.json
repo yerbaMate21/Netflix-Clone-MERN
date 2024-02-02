@@ -1,5 +1,5 @@
 {
-  "proxy": "https://netflix-clone-mern-2br2.onrender.com/",
+  "proxy": "https://netflix-clone-mern-2br2.onrender.com",
   "name": "c",
   "version": "0.1.0",
   "private": true,
