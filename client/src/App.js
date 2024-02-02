@@ -28,9 +28,12 @@ const App = () => {
   }
 
   const fetchUserDetails = async () => {
-    const response = await fetch("/api/userDetails", {
-      headers: { Authorization: `Bearer ${user.token}` },
-    });
+    const response = await fetch(
+      "https://netflix-clone-mern-2br2.onrender.com/api/userDetails",
+      {
+        headers: { Authorization: `Bearer ${user.token}` },
+      }
+    );
     const json = await response.json();
 
     if (response.ok) {

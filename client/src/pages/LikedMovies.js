@@ -36,10 +36,13 @@ const LikedMovies = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`/api/user/liked/${user.email}`, {
-        "Content-Type": "application/json",
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
+      const response = await fetch(
+        `https://netflix-clone-mern-2br2.onrender.com/api/user/liked/${user.email}`,
+        {
+          "Content-Type": "application/json",
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
       const json = await response.json();
 
       if (response.ok) {
@@ -58,14 +61,17 @@ const LikedMovies = () => {
     const movieId = id;
 
     try {
-      const response = await fetch("/api/user/remove", {
-        method: "PUT",
-        body: JSON.stringify({ email, movieId }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      const response = await fetch(
+        "https://netflix-clone-mern-2br2.onrender.com/api/user/remove",
+        {
+          method: "PUT",
+          body: JSON.stringify({ email, movieId }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
       const json = await response.json();
       console.log(json);
 
