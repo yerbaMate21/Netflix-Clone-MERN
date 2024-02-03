@@ -39,16 +39,17 @@ const LikedMovies = () => {
       const response = await fetch(
         `https://netflix-clone-mern-2br2.onrender.com/api/user/liked/${user.email}`,
         {
-          "Content-Type": "application/json",
-          headers: { Authorization: `Bearer ${user.token}` },
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
         }
       );
       const json = await response.json();
 
-      if (response.ok) {
-        dispatch({ type: "SET_LIKEDMOVIES", payload: json });
-        setIsLoading(false);
-      }
+      dispatch({ type: "SET_LIKEDMOVIES", payload: json });
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -65,21 +66,19 @@ const LikedMovies = () => {
         "https://netflix-clone-mern-2br2.onrender.com/api/user/remove",
         {
           method: "PUT",
-          body: JSON.stringify({ email, movieId }),
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`,
           },
+          body: JSON.stringify({ email, movieId }),
         }
       );
       const json = await response.json();
-      console.log(json);
 
-      if (response.ok) {
-        dispatch({ type: "REMOVE_LIKEDMOVIES", payload: json });
-        setIsLoading(false);
-        fetchLikedMovies();
-      }
+      dispatch({ type: "REMOVE_LIKEDMOVIES", payload: json });
+
+      setIsLoading(false);
+      fetchLikedMovies();
     } catch (error) {
       console.log(error);
     }

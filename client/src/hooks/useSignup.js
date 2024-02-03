@@ -39,14 +39,12 @@ export const useSignup = () => {
           password: json.passwordError,
         });
       }
-      if (response.ok) {
-        localStorage.setItem("user", JSON.stringify(json));
+      localStorage.setItem("user", JSON.stringify(json));
 
-        dispatch({ type: "LOGIN", payload: json });
+      dispatch({ type: "LOGIN", payload: json });
 
-        setIsLoading(false);
-        navigate("/signup");
-      }
+      setIsLoading(false);
+      navigate("/signup");
     } catch (error) {
       console.log(error);
     }

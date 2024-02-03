@@ -41,9 +41,7 @@ const App = () => {
       );
       const json = await response.json();
 
-      if (response.ok) {
-        dispatch({ type: "SET_USERDETAILS", payload: json });
-      }
+      dispatch({ type: "SET_USERDETAILS", payload: json });
     } catch (error) {
       console.log(error);
     }

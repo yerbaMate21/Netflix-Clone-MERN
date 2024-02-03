@@ -45,24 +45,22 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
         `https://netflix-clone-mern-2br2.onrender.com/api/user/liked`,
         {
           method: "POST",
-          body: JSON.stringify({ email, data }),
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`,
           },
+          body: JSON.stringify({ email, data }),
         }
       );
       const json = await response.json();
 
-      if (response.ok) {
-        localStorage.setItem("likedMovies", JSON.stringify(likedMovies));
+      localStorage.setItem("likedMovies", JSON.stringify(likedMovies));
 
-        dispatch({ type: "ADD_LIKEDMOVIES", payload: json });
+      dispatch({ type: "ADD_LIKEDMOVIES", payload: json });
 
-        setIsLoading(false);
-        setIsAlertShown(true);
-        setTimeout(() => setIsAlertShown(false), 2500);
-      }
+      setIsLoading(false);
+      setIsAlertShown(true);
+      setTimeout(() => setIsAlertShown(false), 2500);
     } catch (error) {
       console.log(error);
     }
