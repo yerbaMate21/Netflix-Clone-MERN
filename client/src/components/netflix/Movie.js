@@ -5,7 +5,7 @@ import VideoContainer from "./VideoContainer";
 import AlertWindow from "../AlertWindow";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useLikedMoviesContext } from "../../hooks/useLikedMoviesContext";
-import { API_KEY, BASE_URL } from "../../utils/constants";
+import { API_KEY, BASE_URL, API_URL } from "../../utils/constants";
 import { FaPlay, FaPlus, FaStar } from "react-icons/fa";
 import LoadingPage from "../../pages/LoadingPage";
 
@@ -41,17 +41,14 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
     const data = { movie, videoKey };
 
     try {
-      const response = await fetch(
-        `https://netflix-clone-mern-2br2.onrender.com/api/user/liked`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`,
-          },
-          body: JSON.stringify({ email, data }),
-        }
-      );
+      const response = await fetch(`${API_URL}/api/user/liked`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ email, data }),
+      });
       const json = await response.json();
 
       localStorage.setItem("likedMovies", JSON.stringify(likedMovies));

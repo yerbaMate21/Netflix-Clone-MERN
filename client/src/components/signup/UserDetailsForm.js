@@ -1,9 +1,10 @@
+import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import useRegistrationForm from "../../hooks/useRegistrationForm";
 import { useUserDetailsContext } from "../../hooks/useUserDetailsContext";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { API_URL } from "../../utils/constants";
 import { AiOutlineCreditCard } from "react-icons/ai";
 import visa from "../../assets/img/VISA.png";
 import mastercard from "../../assets/img/MASTERCARD.png";
@@ -69,17 +70,14 @@ const UserDetailsForm = () => {
     };
 
     try {
-      const response = await fetch(
-        "https://netflix-clone-mern-2br2.onrender.com/api/userDetails",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`,
-          },
-          body: JSON.stringify(userDetails),
-        }
-      );
+      const response = await fetch(`${API_URL}/api/userDetails`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify(userDetails),
+      });
       const json = await response.json();
 
       if (!response.ok) {

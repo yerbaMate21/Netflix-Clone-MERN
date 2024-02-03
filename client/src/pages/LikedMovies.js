@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLikedMoviesContext } from "../hooks/useLikedMoviesContext";
+import { API_URL } from "../utils/constants";
 import Navbar from "../components/Navbar";
 import MovieItem from "../components/netflix/MovieItem";
 import VideoContainer from "../components/netflix/VideoContainer";
@@ -36,16 +37,13 @@ const LikedMovies = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(
-        `https://netflix-clone-mern-2br2.onrender.com/api/user/liked/${user.email}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
+      const response = await fetch(`${API_URL}/api/user/liked/${user.email}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
       const json = await response.json();
 
       dispatch({ type: "SET_LIKEDMOVIES", payload: json });
@@ -62,17 +60,14 @@ const LikedMovies = () => {
     const movieId = id;
 
     try {
-      const response = await fetch(
-        "https://netflix-clone-mern-2br2.onrender.com/api/user/remove",
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`,
-          },
-          body: JSON.stringify({ email, movieId }),
-        }
-      );
+      const response = await fetch(`${API_URL}/api/user/remove`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ email, movieId }),
+      });
       const json = await response.json();
 
       dispatch({ type: "REMOVE_LIKEDMOVIES", payload: json });
