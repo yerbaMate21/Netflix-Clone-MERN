@@ -28,16 +28,23 @@ const App = () => {
   }
 
   const fetchUserDetails = async () => {
-    const response = await fetch(
-      "https://netflix-clone-mern-2br2.onrender.com/api/userDetails",
-      {
-        headers: { Authorization: `Bearer ${user.token}` },
-      }
-    );
-    const json = await response.json();
+    try {
+      const response = await fetch(
+        "https://netflix-clone-mern-2br2.onrender.com/api/userDetails",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      const json = await response.json();
 
-    if (response.ok) {
-      dispatch({ type: "SET_USERDETAILS", payload: json });
+      if (response.ok) {
+        dispatch({ type: "SET_USERDETAILS", payload: json });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

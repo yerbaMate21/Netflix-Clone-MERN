@@ -162,17 +162,21 @@ const Netflix = () => {
   };
 
   const fetchLikedMovies = async () => {
-    const response = await fetch(
-      `https://netflix-clone-mern-2br2.onrender.com/api/user/liked/${user.email}`,
-      {
-        "Content-Type": "application/json",
-        headers: { Authorization: `Bearer ${user.token}` },
-      }
-    );
-    const json = await response.json();
+    try {
+      const response = await fetch(
+        `https://netflix-clone-mern-2br2.onrender.com/api/user/liked/${user.email}`,
+        {
+          "Content-Type": "application/json",
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
+      const json = await response.json();
 
-    if (response.ok) {
-      dispatch({ type: "SET_LIKEDMOVIES", payload: json });
+      if (response.ok) {
+        dispatch({ type: "SET_LIKEDMOVIES", payload: json });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
