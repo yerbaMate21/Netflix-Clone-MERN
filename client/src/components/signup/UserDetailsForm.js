@@ -68,42 +68,49 @@ const UserDetailsForm = () => {
       plan,
     };
 
-    const response = await fetch("/api/userDetails", {
-      method: "POST",
-      body: JSON.stringify(userDetails),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
-      },
-    });
-    const json = await response.json();
+    try {
+      const response = await fetch(
+        "https://netflix-clone-mern-2br2.onrender.com/api/userDetails",
+        {
+          method: "POST",
+          body: JSON.stringify(userDetails),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      const json = await response.json();
 
-    if (!response.ok) {
-      setIsLoading(false);
-      setError({
-        ...error,
-        cardNumber: json.cardNumberError,
-        expirationDate: json.cardExpirationDateError,
-        cvv: json.cardCvvError,
-        name: json.cardNameError,
-      });
-    }
+      if (!response.ok) {
+        setIsLoading(false);
+        setError({
+          ...error,
+          cardNumber: json.cardNumberError,
+          expirationDate: json.cardExpirationDateError,
+          cvv: json.cardCvvError,
+          name: json.cardNameError,
+        });
+      }
 
-    if (response.ok) {
-      setIsLoading(false);
+      if (response.ok) {
+        setIsLoading(false);
 
-      localStorage.setItem("userDetails", JSON.stringify(userDetails));
+        localStorage.setItem("userDetails", JSON.stringify(userDetails));
 
-      dispatch({ type: "CREATE_USERDETAILS", payload: json });
-      setError({
-        ...error,
-        cardNumber: null,
-        expirationDate: null,
-        cvv: null,
-        name: null,
-      });
+        dispatch({ type: "CREATE_USERDETAILS", payload: json });
+        setError({
+          ...error,
+          cardNumber: null,
+          expirationDate: null,
+          cvv: null,
+          name: null,
+        });
 
-      navigate("/");
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
