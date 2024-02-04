@@ -40,17 +40,17 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
     const email = user.email;
     const data = { movie, videoKey };
 
-    try {
-      const response = await fetch("/api/user/liked", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-        body: JSON.stringify({ email, data }),
-      });
-      const json = await response.json();
+    const response = await fetch("/api/user/liked", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+      body: JSON.stringify({ email, data }),
+    });
+    const json = await response.json();
 
+    if (response.ok) {
       localStorage.setItem("likedMovies", JSON.stringify(likedMovies));
 
       dispatch({ type: "ADD_LIKEDMOVIES", payload: json });
@@ -58,8 +58,6 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
       setIsLoading(false);
       setIsAlertShown(true);
       setTimeout(() => setIsAlertShown(false), 2500);
-    } catch (error) {
-      console.log(error);
     }
   };
 

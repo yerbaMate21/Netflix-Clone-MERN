@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "./useAuthContext";
-import { API_URL } from "../utils/constants";
 
 export const useLogin = () => {
   const [error, setError] = useState({

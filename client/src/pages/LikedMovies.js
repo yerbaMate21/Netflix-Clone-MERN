@@ -35,20 +35,18 @@ const LikedMovies = () => {
   const fetchLikedMovies = async () => {
     setIsLoading(true);
 
-    try {
-      const response = await fetch(`/api/user/liked/${user.email}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-      const json = await response.json();
+    const response = await fetch(`/api/user/liked/${user.email}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    const json = await response.json();
 
+    if (response.ok) {
       dispatch({ type: "SET_LIKEDMOVIES", payload: json });
       setIsLoading(false);
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -58,23 +56,21 @@ const LikedMovies = () => {
     const email = user.email;
     const movieId = id;
 
-    try {
-      const response = await fetch("/api/user/remove", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-        body: JSON.stringify({ email, movieId }),
-      });
-      const json = await response.json();
+    const response = await fetch("/api/user/remove", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+      body: JSON.stringify({ email, movieId }),
+    });
+    const json = await response.json();
 
+    if (response.ok) {
       dispatch({ type: "REMOVE_LIKEDMOVIES", payload: json });
 
       setIsLoading(false);
       fetchLikedMovies();
-    } catch (error) {
-      console.log(error);
     }
   };
 

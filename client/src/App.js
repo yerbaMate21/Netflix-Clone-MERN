@@ -28,19 +28,17 @@ const App = () => {
   }
 
   const fetchUserDetails = async () => {
-    try {
-      const response = await fetch("/api/userDetails", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-      const json = await response.json();
+    const response = await fetch("/api/userDetails", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    const json = await response.json();
 
+    if (response.ok) {
       dispatch({ type: "SET_USERDETAILS", payload: json });
-    } catch (error) {
-      console.log(error);
     }
   };
 

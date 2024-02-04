@@ -162,19 +162,17 @@ const Netflix = () => {
   };
 
   const fetchLikedMovies = async () => {
-    try {
-      const response = await fetch(`/api/user/liked/${user.email}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-      const json = await response.json();
+    const response = await fetch(`/api/user/liked/${user.email}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    const json = await response.json();
 
+    if (response.ok) {
       dispatch({ type: "SET_LIKEDMOVIES", payload: json });
-    } catch (error) {
-      console.log(error);
     }
   };
 
