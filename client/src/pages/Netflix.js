@@ -8,7 +8,7 @@ import Slider from "../components/netflix/Slider";
 import Movie from "../components/netflix/Movie";
 import Dividier from "../components/home/Divider";
 import Footer from "../components/home/Footer";
-import { API_KEY, BASE_URL, API_URL } from "../utils/constants";
+import { API_KEY, BASE_URL } from "../utils/constants";
 
 const Netflix = () => {
   const { user } = useAuthContext();
@@ -163,7 +163,7 @@ const Netflix = () => {
 
   const fetchLikedMovies = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/user/liked/${user.email}`, {
+      const response = await fetch(`/api/user/liked/${user.email}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { useAuthContext } from "./hooks/useAuthContext";
 import { useUserDetailsContext } from "./hooks/useUserDetailsContext";
-import { API_URL } from "./utils/constants";
 import LoadingPage from "./pages/LoadingPage";
 import Home from "./pages/Home";
 import Netflix from "./pages/Netflix";
@@ -30,7 +29,7 @@ const App = () => {
 
   const fetchUserDetails = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/userDetails`, {
+      const response = await fetch("/api/userDetails", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

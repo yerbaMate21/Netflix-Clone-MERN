@@ -5,7 +5,7 @@ import VideoContainer from "./VideoContainer";
 import AlertWindow from "../AlertWindow";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useLikedMoviesContext } from "../../hooks/useLikedMoviesContext";
-import { API_KEY, BASE_URL, API_URL } from "../../utils/constants";
+import { API_KEY, BASE_URL } from "../../utils/constants";
 import { FaPlay, FaPlus, FaStar } from "react-icons/fa";
 import LoadingPage from "../../pages/LoadingPage";
 
@@ -41,7 +41,7 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
     const data = { movie, videoKey };
 
     try {
-      const response = await fetch(`${API_URL}/api/user/liked`, {
+      const response = await fetch("/api/user/liked", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
