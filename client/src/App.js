@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { useAuthContext } from "./hooks/useAuthContext";
 import { useUserDetailsContext } from "./hooks/useUserDetailsContext";
+import { API_URL } from "./utils/constants";
 import LoadingPage from "./pages/LoadingPage";
 import Home from "./pages/Home";
 import Netflix from "./pages/Netflix";
@@ -28,16 +29,10 @@ const App = () => {
   }
 
   const fetchUserDetails = async () => {
-    const response = await fetch(
-      "https://netflix-clone-mern-2br2.onrender.com/api/userDetails",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
-    );
+    const response = await fetch(`${API_URL}/api/userDetails`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${user.token}` },
+    });
     const json = await response.json();
 
     if (response.ok) {
