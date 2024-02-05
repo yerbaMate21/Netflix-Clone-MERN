@@ -162,7 +162,7 @@ const Netflix = () => {
   };
 
   const fetchLikedMovies = async () => {
-    const response = await fetch(`/api/user/liked/${user.email}`, {
+    const response = await fetch(`https://netflix-clone-mern-2br2.onrender.com/api/user/liked/${user.email}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

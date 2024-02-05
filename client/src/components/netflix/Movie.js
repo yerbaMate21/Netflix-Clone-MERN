@@ -40,7 +40,7 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
     const email = user.email;
     const data = { movie, videoKey };
 
-    const response = await fetch("/api/user/liked", {
+    const response = await fetch("https://netflix-clone-mern-2br2.onrender.com/api/user/liked", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

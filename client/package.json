@@ -1,5 +1,4 @@
 {
-  "proxy":"https://netflix-clone-mern-2br2.onrender.com",
   "name": "netflix-clone",
   "version": "0.1.0",
   "private": true,

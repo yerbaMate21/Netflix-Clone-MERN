@@ -35,7 +35,7 @@ const LikedMovies = () => {
   const fetchLikedMovies = async () => {
     setIsLoading(true);
 
-    const response = await fetch(`/api/user/liked/${user.email}`, {
+    const response = await fetch(`https://netflix-clone-mern-2br2.onrender.com/api/user/liked/${user.email}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +56,7 @@ const LikedMovies = () => {
     const email = user.email;
     const movieId = id;
 
-    const response = await fetch("/api/user/remove", {
+    const response = await fetch("https://netflix-clone-mern-2br2.onrender.com/api/user/remove", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
