@@ -55,13 +55,15 @@ const Movie = ({ movie, videoIsOpen, setVideoIsOpen }) => {
         throw new Error(`Error! status: ${response.status}`);
       }
 
-      localStorage.setItem("likedMovies", JSON.stringify(likedMovies));
+      if (response.ok) {
+        localStorage.setItem("likedMovies", JSON.stringify(likedMovies));
 
-      dispatch({ type: "ADD_LIKEDMOVIES", payload: json });
+        dispatch({ type: "ADD_LIKEDMOVIES", payload: json });
 
-      setIsLoading(false);
-      setIsAlertShown(true);
-      setTimeout(() => setIsAlertShown(false), 2500);
+        setIsLoading(false);
+        setIsAlertShown(true);
+        setTimeout(() => setIsAlertShown(false), 2500);
+      }
     } catch (error) {
       console.log(error);
     }

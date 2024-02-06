@@ -50,8 +50,10 @@ const LikedMovies = () => {
         throw new Error(`Error! status: ${response.status}`);
       }
 
-      dispatch({ type: "SET_LIKEDMOVIES", payload: json });
-      setIsLoading(false);
+      if (response.ok) {
+        dispatch({ type: "SET_LIKEDMOVIES", payload: json });
+        setIsLoading(false);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -78,10 +80,12 @@ const LikedMovies = () => {
         throw new Error(`Error! status: ${response.status}`);
       }
 
-      dispatch({ type: "REMOVE_LIKEDMOVIES", payload: json });
+      if (response.ok) {
+        dispatch({ type: "REMOVE_LIKEDMOVIES", payload: json });
 
-      setIsLoading(false);
-      fetchLikedMovies();
+        setIsLoading(false);
+        fetchLikedMovies();
+      }
     } catch (error) {
       console.log(error);
     }

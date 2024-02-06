@@ -43,7 +43,9 @@ const App = () => {
         throw new Error(`Error! status: ${response.status}`);
       }
 
-      dispatch({ type: "SET_USERDETAILS", payload: json });
+      if (response.ok) {
+        dispatch({ type: "SET_USERDETAILS", payload: json });
+      }
     } catch (error) {
       console.log(error);
     }

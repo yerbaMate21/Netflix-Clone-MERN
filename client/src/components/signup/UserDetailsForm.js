@@ -91,20 +91,22 @@ const UserDetailsForm = () => {
         });
       }
 
-      setIsLoading(false);
+      if (response.ok) {
+        setIsLoading(false);
 
-      localStorage.setItem("userDetails", JSON.stringify(userDetails));
+        localStorage.setItem("userDetails", JSON.stringify(userDetails));
 
-      dispatch({ type: "CREATE_USERDETAILS", payload: json });
-      setError({
-        ...error,
-        cardNumber: null,
-        expirationDate: null,
-        cvv: null,
-        name: null,
-      });
+        dispatch({ type: "CREATE_USERDETAILS", payload: json });
+        setError({
+          ...error,
+          cardNumber: null,
+          expirationDate: null,
+          cvv: null,
+          name: null,
+        });
 
-      navigate("/");
+        navigate("/");
+      }
     } catch (error) {
       console.log(error);
     }

@@ -37,12 +37,14 @@ export const useLogin = () => {
         });
       }
 
-      localStorage.setItem("user", JSON.stringify(json));
+      if (response.ok) {
+        localStorage.setItem("user", JSON.stringify(json));
 
-      dispatch({ type: "LOGIN", payload: json });
+        dispatch({ type: "LOGIN", payload: json });
 
-      setIsLoading(false);
-      navigate("/");
+        setIsLoading(false);
+        navigate("/");
+      }
     } catch (error) {
       console.log(error);
     }

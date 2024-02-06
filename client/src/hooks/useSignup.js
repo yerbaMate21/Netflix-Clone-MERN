@@ -37,12 +37,15 @@ export const useSignup = () => {
           password: json.passwordError,
         });
       }
-      localStorage.setItem("user", JSON.stringify(json));
 
-      dispatch({ type: "LOGIN", payload: json });
+      if (response.ok) {
+        localStorage.setItem("user", JSON.stringify(json));
 
-      setIsLoading(false);
-      navigate("/signup");
+        dispatch({ type: "LOGIN", payload: json });
+
+        setIsLoading(false);
+        navigate("/signup");
+      }
     } catch (error) {
       console.log(error);
     }

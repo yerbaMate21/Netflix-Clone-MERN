@@ -21,7 +21,7 @@ const Netflix = () => {
   const [videoIsOpen, setVideoIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  let sliderCount = 3;
+  let sliderCount = 5;
 
   useEffect(() => {
     fetchMovies();
@@ -176,7 +176,9 @@ const Netflix = () => {
         throw new Error(`Error! status: ${response.status}`);
       }
 
-      dispatch({ type: "SET_LIKEDMOVIES", payload: json });
+      if (response.ok) {
+        dispatch({ type: "SET_LIKEDMOVIES", payload: json });
+      }
     } catch (error) {
       console.log(error);
     }
