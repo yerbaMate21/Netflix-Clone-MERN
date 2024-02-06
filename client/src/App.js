@@ -25,18 +25,27 @@ const App = () => {
 
   if (user) {
     const email = user.email;
-    userName = email.substring(0, email.lastIndexOf("@"));
+    userName = email ? email.substring(0, email.lastIndexOf("@")) : "";
   }
 
   const fetchUserDetails = async () => {
-    const response = await fetch(`${API_URL}/api/userDetails`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${user.token}` },
-    });
-    const json = await response.json();
+    try {
+      const response = await fetch(`${API_URL}/api/userDetails`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const json = await response.json();
 
-    if (response.ok) {
+      if (!response.ok) {
+        throw new Error(`Error! status: ${response.status}`);
+      }
+
       dispatch({ type: "SET_USERDETAILS", payload: json });
+    } catch (error) {
+      console.log(error);
     }
   };
 

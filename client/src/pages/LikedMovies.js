@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLikedMoviesContext } from "../hooks/useLikedMoviesContext";
+import { API_URL } from "../utils/constants";
 import Navbar from "../components/Navbar";
 import MovieItem from "../components/netflix/MovieItem";
 import VideoContainer from "../components/netflix/VideoContainer";
@@ -35,18 +36,24 @@ const LikedMovies = () => {
   const fetchLikedMovies = async () => {
     setIsLoading(true);
 
-    const response = await fetch(`https://netflix-clone-mern-2br2.onrender.com/api/user/liked/${user.email}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
-      },
-    });
-    const json = await response.json();
+    try {
+      const response = await fetch(`${API_URL}/api/user/liked/${user.email}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const json = await response.json();
 
-    if (response.ok) {
+      if (!response.ok) {
+        throw new Error(`Error! status: ${response.status}`);
+      }
+
       dispatch({ type: "SET_LIKEDMOVIES", payload: json });
       setIsLoading(false);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -56,21 +63,27 @@ const LikedMovies = () => {
     const email = user.email;
     const movieId = id;
 
-    const response = await fetch("https://netflix-clone-mern-2br2.onrender.com/api/user/remove", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
-      },
-      body: JSON.stringify({ email, movieId }),
-    });
-    const json = await response.json();
+    try {
+      const response = await fetch(`${API_URL}/api/user/remove`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ email, movieId }),
+      });
+      const json = await response.json();
 
-    if (response.ok) {
+      if (!response.ok) {
+        throw new Error(`Error! status: ${response.status}`);
+      }
+
       dispatch({ type: "REMOVE_LIKEDMOVIES", payload: json });
 
       setIsLoading(false);
       fetchLikedMovies();
+    } catch (error) {
+      console.log(error);
     }
   };
 

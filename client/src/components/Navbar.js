@@ -19,7 +19,7 @@ const Navbar = () => {
 
   if (user) {
     const email = user.email;
-    userName = email.substring(0, email.lastIndexOf("@"));
+    userName = email ? email.substring(0, email.lastIndexOf("@")) : "";
   }
 
   const handleClick = () => {

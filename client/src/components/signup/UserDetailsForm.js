@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import useRegistrationForm from "../../hooks/useRegistrationForm";
 import { useUserDetailsContext } from "../../hooks/useUserDetailsContext";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { API_URL } from "../../utils/constants";
 import { AiOutlineCreditCard } from "react-icons/ai";
 import visa from "../../assets/img/VISA.png";
 import mastercard from "../../assets/img/MASTERCARD.png";
@@ -69,7 +70,7 @@ const UserDetailsForm = () => {
     };
 
     try {
-      const response = await fetch("/api/userDetails", {
+      const response = await fetch(`${API_URL}/api/userDetails`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
